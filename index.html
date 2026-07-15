@@ -823,25 +823,50 @@
     }
 
     /* ── Slideshow ── */
+    #gallery { padding-left: 0; padding-right: 0; }
+    #gallery .gallery-header { padding: 0 2rem 2rem; }
+    #gallery .slide-dots { padding: 1rem 0 2.5rem; }
+
     .slideshow-wrap {
       position: relative;
-      border-radius: 16px;
+      width: 100%;
+      height: 520px;
       overflow: hidden;
-      background: #000;
-      aspect-ratio: 4/3;
-      max-height: 520px;
+      background: #111;
+    }
+
+    @media (max-width: 600px) {
+      .slideshow-wrap { height: 300px; }
     }
 
     .slideshow { width: 100%; height: 100%; position: relative; }
+
+    /* blurred background fill */
+    .slide-bg {
+      position: absolute;
+      inset: -20px;
+      width: calc(100% + 40px);
+      height: calc(100% + 40px);
+      object-fit: cover;
+      object-position: center;
+      filter: blur(18px) brightness(0.55) saturate(1.2);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .slide-bg.active { opacity: 1; }
 
     .slide {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      object-position: center;
       opacity: 0;
       transition: opacity 0.6s ease;
+      z-index: 1;
     }
     .slide.active { opacity: 1; }
 
@@ -1839,32 +1864,39 @@
 
 <!-- GALLERY -->
 <section id="gallery">
-  <div class="container">
-    <div class="gallery-header">
-      <div>
-        <p class="section-label">Inside the Grill</p>
-        <h2 class="section-title" style="margin-bottom:0">Photo Gallery</h2>
-      </div>
+  <div class="gallery-header">
+    <div>
+      <p class="section-label">Inside the Grill</p>
+      <h2 class="section-title" style="margin-bottom:0">Photo Gallery</h2>
     </div>
-
-    <div class="slideshow-wrap">
-      <div class="slideshow" id="slideshow">
-        <img class="slide active" src="IMG_5520.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5522.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5523.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5524.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5525.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5526.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5527.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5528.png" alt="Rose's Garden Grill">
-        <img class="slide" src="IMG_5529.png" alt="Rose's Garden Grill">
-      </div>
-      <button class="slide-arrow slide-prev" onclick="moveSlide(-1)"><i class="ti ti-chevron-left"></i></button>
-      <button class="slide-arrow slide-next" onclick="moveSlide(1)"><i class="ti ti-chevron-right"></i></button>
-    </div>
-
-    <div class="slide-dots" id="slide-dots"></div>
   </div>
+
+  <div class="slideshow-wrap">
+    <div class="slideshow" id="slideshow">
+      <img class="slide-bg active" src="IMG_5520.png" aria-hidden="true">
+      <img class="slide active" src="IMG_5520.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5522.png" aria-hidden="true">
+      <img class="slide" src="IMG_5522.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5523.png" aria-hidden="true">
+      <img class="slide" src="IMG_5523.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5524.png" aria-hidden="true">
+      <img class="slide" src="IMG_5524.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5525.png" aria-hidden="true">
+      <img class="slide" src="IMG_5525.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5526.png" aria-hidden="true">
+      <img class="slide" src="IMG_5526.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5527.png" aria-hidden="true">
+      <img class="slide" src="IMG_5527.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5528.png" aria-hidden="true">
+      <img class="slide" src="IMG_5528.png" alt="Rose's Garden Grill">
+      <img class="slide-bg" src="IMG_5529.png" aria-hidden="true">
+      <img class="slide" src="IMG_5529.png" alt="Rose's Garden Grill">
+    </div>
+    <button class="slide-arrow slide-prev" onclick="moveSlide(-1)"><i class="ti ti-chevron-left"></i></button>
+    <button class="slide-arrow slide-next" onclick="moveSlide(1)"><i class="ti ti-chevron-right"></i></button>
+  </div>
+
+  <div class="slide-dots" id="slide-dots"></div>
 </section>
 
 <!-- FOOTER -->
@@ -1891,6 +1923,7 @@
 <script>
   // ── Slideshow ──
   const slides = document.querySelectorAll('.slide');
+  const bgs    = document.querySelectorAll('.slide-bg');
   const dotsWrap = document.getElementById('slide-dots');
   let current = 0;
   let timer;
@@ -1906,9 +1939,11 @@
 
   function goSlide(n) {
     slides[current].classList.remove('active');
+    bgs[current].classList.remove('active');
     dotsWrap.children[current].classList.remove('active');
     current = (n + slides.length) % slides.length;
     slides[current].classList.add('active');
+    bgs[current].classList.add('active');
     dotsWrap.children[current].classList.add('active');
     resetTimer();
   }
