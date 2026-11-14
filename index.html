@@ -288,6 +288,7 @@
     /* ── SECTIONS ── */
     section {
       padding: 6rem 2rem;
+      position: relative;
     }
 
     .container {
@@ -362,18 +363,29 @@
     .fam-collage .img-frame {
       position: relative;
       flex: 1;
+      padding: 10px;
+      background: linear-gradient(145deg, #c8a030 0%, #f0d070 20%, #a87820 40%, #f0d070 60%, #c8a030 80%, #f0d070 100%);
+      border-radius: 6px;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.5),
+        0 10px 36px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        inset 0 -1px 0 rgba(0,0,0,0.35);
     }
 
+    /* Bevel inset shadow for depth */
     .fam-collage .img-frame::before {
       content: '';
       position: absolute;
-      inset: -8px;
-      border-radius: 14px;
-      z-index: 0;
+      inset: 6px;
+      border-radius: 2px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(0,0,0,0.25);
+      z-index: 2;
+      pointer-events: none;
     }
 
-    .fam-collage .img-frame.frame-green::before { background: var(--green-neon); opacity: 0.25; transform: rotate(-3deg); }
-    .fam-collage .img-frame.frame-red::before   { background: var(--red-bright);  opacity: 0.25; transform: rotate(3deg); }
+    .fam-collage .img-frame.frame-green { transform: rotate(-2.5deg); }
+    .fam-collage .img-frame.frame-red   { transform: rotate(2.5deg); }
 
     .fam-collage .img-frame img {
       position: relative;
@@ -381,14 +393,12 @@
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      object-position: center top;
+      object-position: center center;
       display: block;
-      border-radius: 12px;
-      border: 3px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      border: none;
+      background: #1b3a1e;
     }
-
-    .fam-collage .img-frame.frame-green img { transform: rotate(-2deg); }
-    .fam-collage .img-frame.frame-red   img { transform: rotate(2deg); }
 
     @media (max-width: 600px) {
       .fam-collage { gap: 12px; }
@@ -396,90 +406,136 @@
 
     /* ── ORDER ── */
     #order {
-      background: var(--cream);
+      background: var(--green-deep);
+      background-image: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 30px,
+        rgba(255,255,255,0.015) 30px,
+        rgba(255,255,255,0.015) 32px
+      );
     }
+
+    #order .section-label { color: var(--green-neon); }
+    #order .section-title { color: #fff; }
 
     .order-title-row {
       text-align: center;
       margin-bottom: 3rem;
     }
 
-    .order-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+    .order-motto {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.82);
+      margin-top: 0.6rem;
     }
 
+    .order-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    .order-card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      .order-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+
+    /* Tricolor top bar via background-image trick (preserves border-radius) */
     .order-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      background-color: #f8f5ef;
+      background-image: linear-gradient(
+        to right,
+        #009246 33.33%, rgba(255,255,255,0.88) 33.33%,
+        rgba(255,255,255,0.88) 66.66%, #ce2b37 66.66%
+      );
+      background-size: 100% 7px;
+      background-repeat: no-repeat;
+      background-position: top;
+      border-radius: 18px;
+      padding: calc(1.75rem + 7px) 1.75rem 1.75rem;
+      display: flex;
+      flex-direction: column;
       text-decoration: none;
-      color: var(--text-dark);
-      display: block;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      color: inherit;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.28);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .order-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transform: translateY(-6px);
+      box-shadow: 0 18px 52px rgba(0,0,0,0.4);
     }
 
-    .order-card.pickup { border-color: transparent; }
-    .order-card.pickup:hover { border-color: var(--green-light); }
+    /* Pickup: featured dark variant — noticeably darker than the section bg */
+    .order-card.pickup {
+      background-color: #0d1f10;
+      color: #fff;
+    }
 
-    .order-card.doordash:hover { border-color: #ff3008; }
-    .order-card.ubereats:hover { border-color: #142328; }
-    .order-card.grubhub:hover { border-color: #f63440; }
+    .order-card.pickup .order-card-title { color: #fff; }
+    .order-card.pickup .order-card-desc  { color: rgba(255,255,255,0.65); }
 
     .order-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 1.25rem;
-      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      font-size: 1.8rem;
     }
 
-    .order-card.pickup .order-icon { background: rgba(42,82,48,0.1); color: var(--green-mid); }
-    .order-card.doordash .order-icon { background: rgba(255,48,8,0.1); color: #ff3008; }
+    .order-card.pickup .order-icon  { background: rgba(57,211,83,0.15); color: var(--green-neon); }
+    .order-card.doordash .order-icon { background: rgba(255,48,8,0.1);  color: #ff3008; }
     .order-card.ubereats .order-icon { background: rgba(20,35,40,0.08); color: #142328; }
-    .order-card.grubhub .order-icon { background: rgba(246,52,64,0.1); color: #f63440; }
 
     .order-card-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
+      font-size: 1.5rem;
       font-weight: 700;
+      color: var(--green-deep);
       margin-bottom: 0.5rem;
+      line-height: 1.2;
     }
 
     .order-card-desc {
-      font-size: 0.88rem;
-      color: rgba(0,0,0,0.5);
-      line-height: 1.6;
-      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      color: rgba(0,0,0,0.55);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      flex: 1;
     }
 
     .order-card-action {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.85rem;
+      gap: 0.45rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      color: inherit;
-      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      border: 2px solid;
+      align-self: flex-start;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .order-card.pickup .order-card-action { color: var(--green-mid); }
-    .order-card.doordash .order-card-action { color: #ff3008; }
-    .order-card.ubereats .order-card-action { color: #142328; }
-    .order-card.grubhub .order-card-action { color: #f63440; }
+    .order-card.pickup .order-card-action   { border-color: var(--green-neon); color: var(--green-neon); }
+    .order-card.doordash .order-card-action { border-color: #ff3008; color: #ff3008; }
+    .order-card.ubereats .order-card-action { border-color: #2a2a2a; color: #2a2a2a; }
+
+    .order-card.pickup:hover .order-card-action   { background: var(--green-neon); color: #1b3a1e; }
+    .order-card.doordash:hover .order-card-action { background: #ff3008; color: #fff; }
+    .order-card.ubereats:hover .order-card-action { background: #2a2a2a; color: #fff; }
 
     /* ── MENU ── */
     #menu {
@@ -711,6 +767,47 @@
       text-align: right;
     }
 
+    /* Seeded roll badge */
+    .s-roll {
+      display: inline-block;
+      font-size: 0.46rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #b8860b;
+      color: #fff;
+      border-radius: 3px;
+      padding: 1px 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+    .mm-s-roll {
+      display: inline-block;
+      font-size: 0.42rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #b8860b;
+      color: #fff;
+      border-radius: 3px;
+      padding: 1px 3px;
+      margin-left: 3px;
+      vertical-align: middle;
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+
+    /* Back face col 1 — tighter rows so all salads + wraps fit */
+    .menu-face.back .menu-col:first-child .mr {
+      padding: 0.1rem 0;
+      font-size: 0.67rem;
+    }
+    .menu-face.back .menu-col:first-child .mr-name { font-size: 0.67rem; }
+    .menu-face.back .menu-col:first-child .mr-desc { font-size: 0.6rem; line-height: 1.2; }
+    .menu-face.back .menu-col:first-child .ms-head { margin-top: 0.4rem; margin-bottom: 0.3rem; }
+
     /* Footer note */
     .menu-footer-note {
       background: #1b3a1e;
@@ -853,7 +950,7 @@
     .slideshow-wrap {
       position: relative;
       width: 100%;
-      height: 280px;
+      height: 420px;
       overflow: hidden;
     }
     .slideshow-wrap::before {
@@ -886,6 +983,113 @@
       object-fit: cover;
       object-position: center;
       display: block;
+    }
+
+    /* ── Gallery Grid Modal ── */
+    .gallery-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.94);
+      flex-direction: column;
+    }
+    .gallery-modal.open { display: flex; }
+    .gallery-modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .gallery-modal-bar h3 { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; opacity: 0.85; }
+    .gallery-modal-close {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      border-radius: 50%;
+      width: 38px; height: 38px;
+      color: #fff; font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-modal-grid {
+      flex: 1;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 160px;
+      gap: 20px;
+      padding: 8px 28px 28px;
+      align-content: start;
+    }
+    .gallery-modal-thumb {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      background: #111;
+      border-radius: 10px;
+    }
+    .gallery-modal-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+      display: block;
+    }
+    .gallery-modal-thumb:hover img { transform: scale(1.06); }
+    .gallery-viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2100;
+      background: rgba(0,0,0,0.96);
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-viewer.open { display: flex; }
+    .gallery-viewer img {
+      max-width: 92vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .gallery-viewer-close, .gallery-viewer-back {
+      position: absolute;
+      top: 1rem;
+      background: rgba(255,255,255,0.18);
+      border: none; border-radius: 2rem;
+      height: 44px;
+      color: #fff; font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.4rem;
+      padding: 0 1.1rem;
+      letter-spacing: 0.02em;
+    }
+    .gallery-viewer-close { right: 1rem; width: 44px; border-radius: 50%; padding: 0; }
+    .gallery-viewer-back  { left: 1rem; }
+    .gallery-view-all-btn {
+      display: block;
+      margin: 1.2rem auto 0;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .gallery-modal-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 160px;
+        gap: 10px;
+        padding: 4px 10px 16px;
+      }
     }
 
     .carousel-arrow {
@@ -1000,6 +1204,54 @@
       justify-content: center;
     }
 
+    /* ── MAP SECTION ── */
+    .map-section {
+      background: var(--green-deep);
+      padding: 3rem 2rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(57,211,83,0.1);
+    }
+
+    .map-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--green-neon);
+      margin-bottom: 1.25rem;
+    }
+
+    .map-embed {
+      width: 100%;
+      max-width: 900px;
+      height: 340px;
+      border: none;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      filter: saturate(0.8) brightness(0.9);
+    }
+
+    .map-find-us-btn {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .map-section { padding: 2rem 1.5rem 0; }
+      .map-embed { display: none; }
+      .map-find-us-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--green-neon);
+        color: #0d2210;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+      }
+    }
+
     /* ── FOOTER ── */
     footer {
       background: var(--green-deep);
@@ -1036,6 +1288,83 @@
     }
 
     footer .footer-links a:hover { color: var(--green-neon); }
+
+    /* ══════════════════════════════════════════
+       ITALIAN ORNAMENTAL SECTION BORDERS
+       ══════════════════════════════════════════ */
+
+    /* Tricolor top stripe — each main section */
+    #about, #menu, #order, #gallery, .map-section {
+      border-top: 10px solid;
+      border-image: linear-gradient(
+        to right,
+        #009246 0% 33.33%,
+        rgba(255,255,255,0.88) 33.33% 66.66%,
+        #ce2b37 66.66% 100%
+      ) 1;
+    }
+
+    /* Tricolor bottom stripe — each main section */
+    #about, #menu, #order, #gallery {
+      border-bottom: 10px solid;
+    }
+
+    /* Inset ornamental double-frame on each section */
+    #about::before, #menu::before, #order::before, #gallery::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(255,255,255,0.10);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #about::after, #menu::after, #order::after {
+      content: '';
+      position: absolute;
+      inset: 26px;
+      border: 1px solid rgba(255,255,255,0.05);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #order::before { border-color: rgba(0,146,70,0.20); }
+    #order::after  { border-color: rgba(206,43,55,0.15); }
+
+    /* Ensure section children sit above the inset frames */
+    #about > *, #menu > *, #order > *, #gallery > * { position: relative; z-index: 1; }
+
+    /* Ornamental section dividers */
+    .ital-div {
+      position: relative;
+      height: 16px;
+      background: #1b3a1e;
+    }
+
+    .ital-div::before,
+    .ital-div::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+    }
+
+    .ital-div::before {
+      top: 3px;
+      background: linear-gradient(to right, transparent 0%, #009246 15%, #009246 85%, transparent 100%);
+    }
+
+    .ital-div::after {
+      bottom: 3px;
+      background: linear-gradient(to right, transparent 0%, #ce2b37 15%, #ce2b37 85%, transparent 100%);
+    }
+
+    /* Specific backgrounds matching adjacent sections */
+    .ital-div.div-hero-about   { background: linear-gradient(to bottom, var(--green-deep), var(--green-deep)); }
+    .ital-div.div-about-menu   { background: linear-gradient(to bottom, var(--green-deep), #2a1a0a); }
+    .ital-div.div-menu-order   { background: linear-gradient(to bottom, #2a1a0a, var(--cream)); }
+    .ital-div.div-order-gallery { background: linear-gradient(to bottom, var(--cream), #1a3d1f); }
+    .ital-div.div-gallery-map  { background: linear-gradient(to bottom, #1a3d1f, var(--green-deep)); }
 
     /* ── Desktop hero scale-up ── */
     @media (min-width: 601px) {
@@ -1134,6 +1463,14 @@
       .menu-collapse-wrap, .menu-flip-controls, .menu-expand-btn { display: none !important; }
       /* show mobile menu */
       .mobile-menu { display: block; }
+
+      /* Order section — stacked, same design as desktop, just smaller */
+      .order-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+      .order-card { padding: calc(1.1rem + 7px) 1.25rem 1.1rem; }
+      .order-icon { width: 48px; height: 48px; font-size: 1.3rem; margin-bottom: 1rem; }
+      .order-card-title { font-size: 1.2rem; margin-bottom: 0.4rem; }
+      .order-card-desc  { font-size: 0.82rem; margin-bottom: 1.1rem; }
+      .order-card-action { font-size: 0.72rem; padding: 0.5rem 1rem; }
     }
 
     .mm-card-top {
@@ -1249,6 +1586,17 @@
     }
 
 
+    .mm-sub-head {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #3b5e3e;
+      border-bottom: 1px solid #c8b99a;
+      padding: 0.6rem 0 0.25rem;
+      margin: 0.5rem 0 0.3rem;
+    }
+
     /* Catering panel */
     .mm-catering .mm-panel-body { text-align: center; }
     .mm-cat-logo {
@@ -1280,7 +1628,7 @@
 <nav>
   <div class="nav-left">
     <a href="tel:+16096461763" class="nav-phone" aria-label="Call us"><i class="ti ti-phone"></i></a>
-    <a href="#" class="nav-logo">Rose's Garden Grill</a>
+    <a href="#" class="nav-logo" id="nav-logo-tap">Rose's Garden Grill</a>
   </div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -1317,6 +1665,7 @@
 
 </section>
 
+<div class="ital-div div-hero-about" aria-hidden="true"></div>
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
@@ -1331,10 +1680,10 @@
       <div class="about-img-wrap">
         <div class="fam-collage">
           <div class="img-frame frame-green">
-            <img src="guys.png" alt="Trifiletti family">
+            <img id="about-img-0" src="guys.png" alt="Trifiletti family">
           </div>
           <div class="img-frame frame-red">
-            <img src="fam2.jpg" alt="Trifiletti family">
+            <img id="about-img-1" src="fam2.jpg" alt="Trifiletti family">
           </div>
         </div>
       </div>
@@ -1342,6 +1691,7 @@
   </div>
 </section>
 
+<div class="ital-div div-about-menu" aria-hidden="true"></div>
 <!-- MENU -->
 <section id="menu">
   <div class="container" style="max-width:1200px;">
@@ -1368,56 +1718,54 @@
           <div class="menu-flag-stripe"><div class="s-green"></div><div class="s-white"></div><div class="s-red"></div></div>
 
           <div class="menu-body front-body">
-            <!-- COL 1: The Italians + Cold Sandwiches -->
+            <!-- COL 1: Italians & Cold Subs -->
             <div class="menu-col">
-              <div class="ms-head">The Italians</div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Atlantic City</div><div class="mr-desc">Genoa salami, capicola, cologna, mild provolone</div></div><div class="mr-price">12</div></div>
+              <div class="ms-head">Italians &amp; Cold Subs</div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Atlantic City</div><div class="mr-desc">Genoa salami, capicola, cologna, mild provolone, LTO</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Capp. Salami &amp; Cheese</div><div class="mr-desc">Capicola, Genoa salami, mild provolone, LTO</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The South Philly</div><div class="mr-desc">Parma prosciutto, imported capicola, imported Genoa, sharp provolone, roasted peppers, LTO</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Bronx Bomber</div><div class="mr-desc">Parma prosciutto, roasted turkey, fresh mozzarella, roasted peppers, LTO</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Mustang</div><div class="mr-desc">Parma prosciutto, soppressata, greens, sharp provolone, mayo, LTO</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Saint Anthony</div><div class="mr-desc">Parma prosciutto, sharp provolone, tomato &amp; long hots</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The 'Lil Angela</div><div class="mr-desc">Prosciutini pepper ham, sharp provolone, Aunt Rose's peppers, mayo, LTO</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Henry Hill</div><div class="mr-desc">Parma prosciutto, soppressata, roasted peppers, fresh mozzarella, arugula, tomato, balsamic</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The South Philly <span class="s-roll">seeded roll</span></div><div class="mr-desc">Parma prosciutto, imported capicola, imported Genoa, sharp provolone, roasted peppers, LTO</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Bronx Bomber <span class="s-roll">seeded roll</span></div><div class="mr-desc">Parma prosciutto, roasted turkey, fresh mozzarella, roasted peppers, LTO</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Mustang <span class="s-roll">seeded roll</span></div><div class="mr-desc">Parma prosciutto, soppressata, greens, sharp provolone, mayo, LTO</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Saint Anthony <span class="s-roll">seeded roll</span></div><div class="mr-desc">Parma prosciutto, sharp provolone, tomato &amp; long hots</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The 'Lil Angela <span class="s-roll">seeded roll</span></div><div class="mr-desc">Prosciutini pepper ham, sharp provolone, Aunt Rose's peppers, mayo, LTO</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Henry Hill <span class="s-roll">seeded roll</span></div><div class="mr-desc">Parma prosciutto, soppressata, roasted peppers, fresh mozzarella, arugula, tomato, balsamic</div></div><div class="mr-price">14</div></div>
 
               <div class="ms-flag"><span class="g"></span><span class="w"></span><span class="r"></span></div>
-              <div class="ms-head">Cold Sandwiches</div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Jive Turkey</div><div class="mr-desc">Oven roasted turkey, cheese, LTO</div></div><div class="mr-price">11</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Turkey Club</div><div class="mr-desc">Roasted turkey, bacon, LT, mayo</div></div><div class="mr-price">13</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Jive Turkey</div><div class="mr-desc">Oven roasted turkey, cheese, LTO</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Turkey Club</div><div class="mr-desc">Roasted turkey, bacon, LT, mayo</div></div><div class="mr-price">14</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Southwest Turkey</div><div class="mr-desc">Roasted turkey, bacon, cheddar, roasted peppers, avocado, chipotle sauce</div></div><div class="mr-price">14</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Chicken Salad</div><div class="mr-desc">Hand cut chicken salad, LTO. Add cheese $1</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The California Club</div><div class="mr-desc">Hand cut chicken salad, bacon, avocado, L&amp;T on rye</div></div><div class="mr-price">13</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Hamptons Wrap</div><div class="mr-desc">Hand cut chicken salad, craisins, candied walnuts, arugula, balsamic</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Tuna Submarine</div><div class="mr-desc">Tuna from the sea, LTO, Hellman's. Add cheese $1</div></div><div class="mr-price">11</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Sandson</div><div class="mr-desc">Tuna fish, Aunt Rose's peppers, sharp provo, homemade Caesar dressing, LTO</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Sandson <span class="s-roll">seeded roll</span></div><div class="mr-desc">Tuna fish, Aunt Rose's peppers, sharp provo, homemade Caesar dressing, LTO</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Cold Roast Beef Sub</div><div class="mr-desc">Fresh roasted in-house roast beef, American cheese, LTO</div></div><div class="mr-price">13</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Black &amp; Blue</div><div class="mr-desc">Roast beef, blue cheese crumbles, arugula, tomato, red onion, horseradish mayo</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Black &amp; Blue <span class="s-roll">seeded roll</span></div><div class="mr-desc">Roast beef, blue cheese crumbles, arugula, tomato, red onion, horseradish mayo</div></div><div class="mr-price">14</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Corn Beef Special</div><div class="mr-desc">Corn beef, swiss, slaw, Thousand Island &amp; pickles on rye</div></div><div class="mr-price">13</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Ham &amp; Cheese</div><div class="mr-desc">Imported ham, cheese, LTO</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Egg Salad</div><div class="mr-desc">Egg salad, eleven herbs, spices &amp; LTO</div></div><div class="mr-price">10</div></div>
             </div>
 
-            <!-- COL 2: Hand Cut Chicken Cutlets + Old Schoolers -->
+            <!-- COL 2: Cutlets & Old Schoolers -->
             <div class="menu-col">
-              <div class="ms-head">Hand Cut Chicken Cutlets</div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Enio (Cutlet 8)</div><div class="mr-desc">Chicken cutlet, greens &amp; sharp provolone</div></div><div class="mr-price">13</div></div>
+              <div class="ms-head">Cutlets &amp; Old Schoolers</div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Enio (Cutlet 8) <span class="s-roll">seeded roll</span></div><div class="mr-desc">Chicken cutlet, greens &amp; sharp provolone</div></div><div class="mr-price">13</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Frank Jr.</div><div class="mr-desc">Cutlet, LT, mayo</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Big Nick</div><div class="mr-desc">Cutlet, roasted peppers, fresh mozzarella &amp; balsamic</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Chicken Parm</div><div class="mr-desc">Chicken parmesan, provolone &amp; gravy</div></div><div class="mr-price">13</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Parminator</div><div class="mr-desc">Chicken parmesan, pepperoni, provolone, Aunt Rose's peppers &amp; gravy</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Julio</div><div class="mr-desc">Cutlet, bacon, avocado, LT, mayo</div></div><div class="mr-price">15</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Montalbán</div><div class="mr-desc">Cutlet, sharp provolone, greens &amp; long hots</div></div><div class="mr-price">15</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Gladiator</div><div class="mr-desc">Cutlet, prosciutto, fresh mozzarella, roasted peppers, arugula &amp; balsamic</div></div><div class="mr-price">15</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Caesar Augustus</div><div class="mr-desc">Cutlet, tossed romaine, prosciutto, banana peppers &amp; parmesan</div></div><div class="mr-price">15</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Antonio</div><div class="mr-desc">Cutlet, vodka sauce, pesto &amp; fresh mozzarella</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Big Nick <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, roasted peppers, fresh mozzarella &amp; balsamic</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Chicken Parm <span class="s-roll">seeded roll</span></div><div class="mr-desc">Chicken parmesan, provolone &amp; gravy</div></div><div class="mr-price">13</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Parminator <span class="s-roll">seeded roll</span></div><div class="mr-desc">Chicken parmesan, pepperoni, provolone, Aunt Rose's peppers &amp; gravy</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Julio <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, bacon, avocado, LT, mayo</div></div><div class="mr-price">15</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Montalbán <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, prosciutto, sharp provolone, greens &amp; long hots</div></div><div class="mr-price">15</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Gladiator <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, prosciutto, fresh mozzarella, roasted peppers, arugula &amp; balsamic</div></div><div class="mr-price">15</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Caesar Augustus <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, tossed romaine, prosciutto, banana peppers &amp; parmesan</div></div><div class="mr-price">15</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Antonio <span class="s-roll">seeded roll</span></div><div class="mr-desc">Cutlet, vodka sauce, pesto &amp; fresh mozzarella</div></div><div class="mr-price">14</div></div>
 
               <div class="ms-flag"><span class="g"></span><span class="w"></span><span class="r"></span></div>
-              <div class="ms-head">Old Schoolers</div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Hot Roast Beef</div><div class="mr-desc">The Brother Carm · Add greens $1 · Add cheese $1</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Hot Roast Pork</div><div class="mr-desc">The George Cimino · Add greens $1 · Add cheese $1</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Meatball Sub</div><div class="mr-desc">4 large meatballs &amp; gravy. Add cheese $1</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Hot Sausage &amp; Peppers</div><div class="mr-desc">Hot sausage, peppers &amp; onions</div></div><div class="mr-price">11</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Sausage Italian 8</div><div class="mr-desc">Sharp &amp; sharp provolone</div></div><div class="mr-price">13</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Sausage Italian 8 <span class="s-roll">seeded roll</span></div><div class="mr-desc">Sharp &amp; sharp provolone</div></div><div class="mr-price">13</div></div>
             </div>
 
             <!-- COL 3: Grilled Sammies + Big Burgers -->
@@ -1425,14 +1773,14 @@
               <div class="ms-head">Grilled Sammies</div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Cheese Steak</div><div class="mr-desc">American, mild provolone, Cooper or Real Cheese Whiz</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Cheese Steak Sub</div><div class="mr-desc">Cheese steak sub, LT, fried onions</div></div><div class="mr-price">13</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Jersey Devil</div><div class="mr-desc">Pork roll, cooper sharp, long hots, fried onions &amp; mayo</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The Balboa</div><div class="mr-desc">Steak, whiz, fried onions — A South Philly Favorite!</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Jersey Devil <span class="s-roll">seeded roll</span></div><div class="mr-desc">Pork roll, cooper sharp, long hots, fried onions &amp; mayo</div></div><div class="mr-price">14</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The Balboa <span class="s-roll">seeded roll</span></div><div class="mr-desc">Steak, whiz, fried onions — A South Philly Favorite!</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Super Lomo</div><div class="mr-desc">Cheese steak, BLT, fried onion w/ mayo, bacon, lettuce &amp; tomatoes</div></div><div class="mr-price">14</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Steak 8</div><div class="mr-desc">Steak, greens, sharp provolone</div></div><div class="mr-price">13</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Steak 8 <span class="s-roll">seeded roll</span></div><div class="mr-desc">Steak, greens, sharp provolone</div></div><div class="mr-price">13</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Volcano</div><div class="mr-desc">Steak, whiz, cayenne, fried onions (your choice of hot peppers)</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Chicken Cheese Steak</div><div class="mr-desc">Real chicken breast cheese steak. Add LTO $1</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Pilone</div><div class="mr-desc">Chicken, cheese, bacon, lettuce, tomatoes, fried onions, mayo</div></div><div class="mr-price">13</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Grilled Chicken 8</div><div class="mr-desc">Grilled chicken, greens, sharp provolone (Duck 8)</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Grilled Chicken 8 <span class="s-roll">seeded roll</span></div><div class="mr-desc">Grilled chicken, greens, sharp provolone (Duck 8)</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Steak Champ</div><div class="mr-desc">Steak, chicken, bacon, American cheese, Ranch</div></div><div class="mr-price">13</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Cuban</div><div class="mr-desc">Grilled chicken, ham, swiss cheese, Alberto's salsa, pickles</div></div><div class="mr-price">12</div></div>
 
@@ -1459,9 +1807,9 @@
 
               <div class="ms-flag"><span class="g"></span><span class="w"></span><span class="r"></span></div>
               <div class="ms-head">Vegetarian / Seafood</div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Egg Plant 8</div><div class="mr-desc">Thin fried eggplant, sharp provo</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Egg Plant Parm</div><div class="mr-desc">Eggplant, 2 provolone, tomato sauce</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">The John Triff</div><div class="mr-desc">Veggie sub — grilled eggplant, zucchini, mushroom, fried onions, greens, roasted peppers, sharp provo</div></div><div class="mr-price">11</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Egg Plant 8 <span class="s-roll">seeded roll</span></div><div class="mr-desc">Thin fried eggplant, sharp provo</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Egg Plant Parm <span class="s-roll">seeded roll</span></div><div class="mr-desc">Eggplant, 2 provolone, tomato sauce</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">The John Triff <span class="s-roll">seeded roll</span></div><div class="mr-desc">Veggie sub — grilled eggplant, zucchini, mushroom, fried onions, greens, roasted peppers, sharp provo</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Vegan Burrito</div><div class="mr-desc">Seasoned rice &amp; beans, pepper &amp; onion, LT, avocado, Alberto's salsa</div></div><div class="mr-price">11</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Diana</div><div class="mr-desc">Eggplant wrap, balsamic, fresh mozzarella, roasted peppers</div></div><div class="mr-price">12</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Tijuana Wrap</div><div class="mr-desc">Grilled shrimp w/ Alberto sauce, avocado, LT in a wrap</div></div><div class="mr-price">12</div></div>
@@ -1520,7 +1868,7 @@
               <div class="mr"><div class="mr-left"><div class="mr-name">Grilled Filet Mignon Caesar Wrap</div><div class="mr-desc">Grilled filet, parmesan, caesar dressing &amp; romaine</div></div><div class="mr-price">16</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">Fancy Filet Mignon Wrap</div><div class="mr-desc">Grilled filet, arugula, horseradish mayo, red onion &amp; feta</div></div><div class="mr-price">16</div></div>
               <div class="mr"><div class="mr-left"><div class="mr-name">The Ava Wrap</div><div class="mr-desc">Greens, roasted peppers &amp; sharp provolone</div></div><div class="mr-price">12</div></div>
-              <div class="mr"><div class="mr-left"><div class="mr-name">Greek Chicken Wrap</div><div class="mr-desc">Chicken, tomatoes, lettuce, cucumbers, red onions &amp; greek</div></div><div class="mr-price">12</div></div>
+              <div class="mr"><div class="mr-left"><div class="mr-name">Greek Chicken Wrap</div><div class="mr-desc">Chicken, tomatoes, lettuce, cucumbers, red onions &amp; greek dressing</div></div><div class="mr-price">12</div></div>
             </div>
 
             <!-- COL 2: Breakfast + Appetizers -->
@@ -1552,31 +1900,55 @@
               <div class="mr"><div class="mr-left"><div class="mr-name">Soup of the Day</div><div class="mr-desc">Ask about our soup of the day</div></div><div class="mr-price"></div></div>
             </div>
 
-            <!-- COL 3: Catering info + hours -->
-            <div class="menu-col" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-              <div style="margin-bottom:1rem;">
-                <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;font-style:italic;color:#8b1a1a;line-height:0.9;">Rose's<br>Garden<br>Grill</div>
-                <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#1b3a1e;margin-top:0.5rem;">Trifiletti &amp; Sons</div>
-                <div style="font-size:0.7rem;color:#333;margin-top:0.4rem;line-height:1.8;">Professional Sandwich Shop<br>Serving Breakfast, Lunch &amp; Dinner Daily</div>
-              </div>
-              <div style="border:2px solid #8b1a1a;border-radius:6px;padding:1rem;margin-bottom:1rem;width:100%;">
-                <div style="font-size:0.7rem;color:#333;line-height:1.9;">
-                  <strong>P:</strong> (609) 646-1763<br>
-                  <strong>F:</strong> (609) 646-0202<br>
-                  2605 New Road (Rt. 9)<br>Northfield / Linwood Border<br><br>
-                  <em style="font-size:0.62rem;color:#666;">*$15 Minimum Order for Delivery When Available</em>
+            <!-- COL 3: Catering -->
+            <div class="menu-col" style="display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;text-align:center;">
+              <div style="border:2px solid #1b3a1e;border-radius:6px;padding:0.6rem 0.75rem;width:100%;text-align:left;box-sizing:border-box;">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:#8b1a1a;margin-bottom:0.2rem;text-align:center;">Specialized Catering</div>
+                <div style="font-size:0.58rem;color:#444;font-style:italic;text-align:center;margin-bottom:0.3rem;">We Can Make Just About Anything!</div>
+                <!-- Trays & Salads -->
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1b3a1e;margin:0.3rem 0 0.25rem;">Catering Trays</div>
+                <div style="font-size:0.62rem;color:#333;line-height:1.8;">
+                  <div style="display:flex;justify-content:space-between;"><span>6 Sandwich Tray (6–10 People) Hot/Cold/Mixed</span><span style="font-weight:600;padding-left:6px;">$75</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>8 Sandwich Tray (8–12 People) Hot/Cold/Mixed</span><span style="font-weight:600;padding-left:6px;">$93</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Jumbo Rosa Salad</span><span style="font-weight:600;padding-left:6px;">$36</span></div>
+                  <div style="font-size:0.56rem;color:#777;font-style:italic;padding-left:0.5rem;">Craisins, walnuts, crumbled blue cheese, mixed veggies &amp; balsamic vinaigrette</div>
+                  <div style="display:flex;justify-content:space-between;"><span>Jumbo Caesar Salad</span><span style="font-weight:600;padding-left:6px;">$32</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Jumbo Garden Salad</span><span style="font-weight:600;padding-left:6px;">$32</span></div>
                 </div>
-              </div>
-              <div style="border:2px solid #1b3a1e;border-radius:6px;padding:1rem;margin-bottom:1rem;width:100%;">
-                <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:#8b1a1a;margin-bottom:0.4rem;">Hours</div>
-                <div style="font-size:0.7rem;color:#333;line-height:1.9;">
-                  Mon – Wed: 9am – 6pm<br>
-                  Thu – Sat: 9am – 7pm
+                <div style="font-size:0.56rem;color:#888;font-style:italic;margin:0.25rem 0 0.4rem;">Prices may vary based on customization</div>
+                <!-- Italian Classics -->
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8b1a1a;margin:0.35rem 0 0.25rem;">Italian Classics</div>
+                <div style="font-size:0.62rem;color:#333;line-height:1.8;">
+                  <div style="display:flex;justify-content:space-between;"><span>Hot Roast Beef <span style="font-weight:400;font-style:italic;color:#666;">(4 lb Italian style)</span></span><span style="font-weight:600;padding-left:6px;">$60</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Hot Roast Pork <span style="font-weight:400;font-style:italic;color:#666;">(4 lb Italian style)</span></span><span style="font-weight:600;padding-left:6px;">$55</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Meatball Special <span style="font-weight:400;font-style:italic;color:#666;">(5 lbs)</span></span><span style="font-weight:600;padding-left:6px;">$60</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Sausage, Peppers &amp; Onions <span style="font-weight:400;font-style:italic;color:#666;">(Hot or Sweet)</span></span><span style="font-weight:600;padding-left:6px;">$55</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Meat Lasagna</span><span style="font-weight:600;padding-left:6px;">$55</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Vegetable Lasagna</span><span style="font-weight:600;padding-left:6px;">$55</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Lemon Chicken</span><span style="font-weight:600;padding-left:6px;">$50</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Marbella</span><span style="font-weight:600;padding-left:6px;">$55</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Cacciatore</span><span style="font-weight:600;padding-left:6px;">$50</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Marsala</span><span style="font-weight:600;padding-left:6px;">$50</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Picante</span><span style="font-weight:600;padding-left:6px;">$50</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Parmesan</span><span style="font-weight:600;padding-left:6px;">$54</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Eggplant Parmesan</span><span style="font-weight:600;padding-left:6px;">$54</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Eggplant Rollatini</span><span style="font-weight:600;padding-left:6px;">$54</span></div>
                 </div>
-              </div>
-              <div style="border:2px solid #1b3a1e;border-radius:6px;padding:1rem;width:100%;">
-                <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#8b1a1a;">Specialized Catering</div>
-                <div style="font-size:0.68rem;color:#333;margin-top:0.3rem;font-style:italic;">for all Events and Occasions</div>
+                <div style="font-size:0.56rem;color:#777;font-style:italic;margin:0.25rem 0 0.35rem;">**Beef, Pork, Meatballs &amp; Sausage come with 2 Doz. Rolls**</div>
+                <!-- Pasta -->
+                <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8b6914;margin:0.35rem 0 0.25rem;">Pasta</div>
+                <div style="font-size:0.62rem;color:#333;line-height:1.8;">
+                  <div style="display:flex;justify-content:space-between;"><span>Shrimp Scampi</span><span style="font-weight:600;padding-left:6px;">$49</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Penne &amp; Sausage</span><span style="font-weight:600;padding-left:6px;">$45</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Chicken Florentine</span><span style="font-weight:600;padding-left:6px;">$45</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Pasta Florentine</span><span style="font-weight:600;padding-left:6px;">$39</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Tortellini Carbonara</span><span style="font-weight:600;padding-left:6px;">$60</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Baked Manicotti</span><span style="font-weight:600;padding-left:6px;">$39</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Ravioli</span><span style="font-weight:600;padding-left:6px;">$39</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Baked Ziti</span><span style="font-weight:600;padding-left:6px;">$35</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Penne Vodka</span><span style="font-weight:600;padding-left:6px;">$39</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>Mac &amp; Cheese</span><span style="font-weight:600;padding-left:6px;">$40</span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1598,20 +1970,15 @@
     <!-- ══ MOBILE MENU ══ -->
     <div class="mobile-menu" id="mobile-menu">
       <div class="mm-tabs" id="mm-tabs">
-        <button class="mm-tab active" onclick="showSection(0)">The Italians</button>
-        <button class="mm-tab" onclick="showSection(1)">Cold Sandwiches</button>
-        <button class="mm-tab" onclick="showSection(2)">Chicken Cutlets</button>
-        <button class="mm-tab" onclick="showSection(3)">Old Schoolers</button>
-        <button class="mm-tab" onclick="showSection(4)">Grilled Sammies</button>
-        <button class="mm-tab" onclick="showSection(5)">Big Burgers</button>
-        <button class="mm-tab" onclick="showSection(6)">Burritos &amp; Quesadillas</button>
-        <button class="mm-tab" onclick="showSection(7)">Vegetarian / Seafood</button>
-        <button class="mm-tab" onclick="showSection(8)">Buffalos</button>
-        <button class="mm-tab" onclick="showSection(9)">Salads</button>
-        <button class="mm-tab" onclick="showSection(10)">Wraps</button>
-        <button class="mm-tab" onclick="showSection(11)">Breakfast</button>
-        <button class="mm-tab" onclick="showSection(12)">Appetizers</button>
-        <button class="mm-tab" onclick="showSection(13)">Catering &amp; Hours</button>
+        <button class="mm-tab active" onclick="showSection(0)">Italians &amp; Cold Subs</button>
+        <button class="mm-tab" onclick="showSection(1)">Cutlets &amp; Old Schoolers</button>
+        <button class="mm-tab" onclick="showSection(2)">Grilled Sammies, Buffalos &amp; Wraps</button>
+        <button class="mm-tab" onclick="showSection(3)">Burritos &amp; Burgers</button>
+        <button class="mm-tab" onclick="showSection(4)">Vegetarian / Seafood</button>
+        <button class="mm-tab" onclick="showSection(5)">Salads</button>
+        <button class="mm-tab" onclick="showSection(6)">Breakfast</button>
+        <button class="mm-tab" onclick="showSection(7)">Appetizers</button>
+        <button class="mm-tab" onclick="showSection(8)">Catering &amp; Hours</button>
       </div>
 
       <!-- shared card header: flag stripe + section title -->
@@ -1619,37 +1986,35 @@
         <div class="mm-flag-stripe"><span class="s-green"></span><span class="s-white"></span><span class="s-red"></span></div>
         <div class="mm-card-header-bar">
           <div class="mm-section-title" id="mm-section-title">The Italians</div>
-          <div class="mm-counter" id="mm-counter">1 / 14</div>
+          <div class="mm-counter" id="mm-counter">1 / 9</div>
         </div>
       </div>
 
       <div class="mm-panels">
 
-        <!-- 0: The Italians -->
+        <!-- 0: Italians & Cold Subs -->
         <div class="mm-panel active"><div class="mm-panel-body">
+          <div class="mm-sub-head">The Italians</div>
           <div class="mm-item"><span class="mm-name">The Atlantic City</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Genoa salami, capicola, cologna, mild provolone</div>
+          <div class="mm-desc">Genoa salami, capicola, cologna, mild provolone, LTO</div>
           <div class="mm-item"><span class="mm-name">Capp. Salami &amp; Cheese</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Capicola, Genoa salami, mild provolone, LTO</div>
-          <div class="mm-item"><span class="mm-name">The South Philly</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The South Philly <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Parma prosciutto, imported capicola, imported Genoa, sharp provolone, roasted peppers, LTO</div>
-          <div class="mm-item"><span class="mm-name">The Bronx Bomber</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Bronx Bomber <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Parma prosciutto, roasted turkey, fresh mozzarella, roasted peppers, LTO</div>
-          <div class="mm-item"><span class="mm-name">The Mustang</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Mustang <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Parma prosciutto, soppressata, greens, sharp provolone, mayo, LTO</div>
-          <div class="mm-item"><span class="mm-name">The Saint Anthony</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Saint Anthony <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Parma prosciutto, sharp provolone, tomato &amp; long hots</div>
-          <div class="mm-item"><span class="mm-name">The 'Lil Angela</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">The 'Lil Angela <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Prosciutini pepper ham, sharp provolone, Aunt Rose's peppers, mayo, LTO</div>
-          <div class="mm-item"><span class="mm-name">The Henry Hill</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Henry Hill <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Parma prosciutto, soppressata, roasted peppers, fresh mozzarella, arugula, tomato, balsamic</div>
-        </div></div>
-
-        <!-- 1: Cold Sandwiches -->
-        <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">The Jive Turkey</span><span class="mm-price">$11</span></div>
+          <div class="mm-sub-head">Cold Sandwiches</div>
+          <div class="mm-item"><span class="mm-name">The Jive Turkey</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Oven roasted turkey, cheese, LTO</div>
-          <div class="mm-item"><span class="mm-name">Turkey Club</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Turkey Club</span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Roasted turkey, bacon, LT, mayo</div>
           <div class="mm-item"><span class="mm-name">Southwest Turkey</span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Roasted turkey, bacon, cheddar, roasted peppers, avocado, chipotle sauce</div>
@@ -1661,11 +2026,11 @@
           <div class="mm-desc">Hand cut chicken salad, craisins, candied walnuts, arugula, balsamic</div>
           <div class="mm-item"><span class="mm-name">Tuna Submarine</span><span class="mm-price">$11</span></div>
           <div class="mm-desc">Tuna from the sea, LTO, Hellman's. Add cheese $1</div>
-          <div class="mm-item"><span class="mm-name">The Sandson</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">The Sandson <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Tuna fish, Aunt Rose's peppers, sharp provo, homemade Caesar dressing, LTO</div>
           <div class="mm-item"><span class="mm-name">Cold Roast Beef Sub</span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Fresh roasted in-house roast beef, American cheese, LTO</div>
-          <div class="mm-item"><span class="mm-name">The Black &amp; Blue</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Black &amp; Blue <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Roast beef, blue cheese crumbles, arugula, tomato, red onion, horseradish mayo</div>
           <div class="mm-item"><span class="mm-name">Corn Beef Special</span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Corn beef, swiss, slaw, Thousand Island &amp; pickles on rye</div>
@@ -1675,32 +2040,30 @@
           <div class="mm-desc">Egg salad, eleven herbs, spices &amp; LTO</div>
         </div></div>
 
-        <!-- 2: Chicken Cutlets -->
+        <!-- 1: Cutlets & Old Schoolers -->
         <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">The Enio (Cutlet 8)</span><span class="mm-price">$13</span></div>
+          <div class="mm-sub-head">Hand Cut Chicken Cutlets</div>
+          <div class="mm-item"><span class="mm-name">The Enio (Cutlet 8) <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Chicken cutlet, greens &amp; sharp provolone</div>
           <div class="mm-item"><span class="mm-name">The Frank Jr.</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Cutlet, LT, mayo</div>
-          <div class="mm-item"><span class="mm-name">The Big Nick</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Big Nick <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Cutlet, roasted peppers, fresh mozzarella &amp; balsamic</div>
-          <div class="mm-item"><span class="mm-name">Chicken Parm</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Chicken Parm <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Chicken parmesan, provolone &amp; gravy</div>
-          <div class="mm-item"><span class="mm-name">The Parminator</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Parminator <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Chicken parmesan, pepperoni, provolone, Aunt Rose's peppers &amp; gravy</div>
-          <div class="mm-item"><span class="mm-name">The Julio</span><span class="mm-price">$15</span></div>
+          <div class="mm-item"><span class="mm-name">The Julio <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$15</span></div>
           <div class="mm-desc">Cutlet, bacon, avocado, LT, mayo</div>
-          <div class="mm-item"><span class="mm-name">The Montalbán</span><span class="mm-price">$15</span></div>
-          <div class="mm-desc">Cutlet, sharp provolone, greens &amp; long hots</div>
-          <div class="mm-item"><span class="mm-name">The Gladiator</span><span class="mm-price">$15</span></div>
+          <div class="mm-item"><span class="mm-name">The Montalbán <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Cutlet, prosciutto, sharp provolone, greens &amp; long hots</div>
+          <div class="mm-item"><span class="mm-name">The Gladiator <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$15</span></div>
           <div class="mm-desc">Cutlet, prosciutto, fresh mozzarella, roasted peppers, arugula &amp; balsamic</div>
-          <div class="mm-item"><span class="mm-name">Caesar Augustus</span><span class="mm-price">$15</span></div>
+          <div class="mm-item"><span class="mm-name">Caesar Augustus <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$15</span></div>
           <div class="mm-desc">Cutlet, tossed romaine, prosciutto, banana peppers &amp; parmesan</div>
-          <div class="mm-item"><span class="mm-name">The Antonio</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Antonio <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Cutlet, vodka sauce, pesto &amp; fresh mozzarella</div>
-        </div></div>
-
-        <!-- 3: Old Schoolers -->
-        <div class="mm-panel"><div class="mm-panel-body">
+          <div class="mm-sub-head">Old Schoolers</div>
           <div class="mm-item"><span class="mm-name">Hot Roast Beef</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">The Brother Carm · Add greens $1 · Add cheese $1</div>
           <div class="mm-item"><span class="mm-name">Hot Roast Pork</span><span class="mm-price">$11</span></div>
@@ -1709,23 +2072,24 @@
           <div class="mm-desc">4 large meatballs &amp; gravy. Add cheese $1</div>
           <div class="mm-item"><span class="mm-name">Hot Sausage &amp; Peppers</span><span class="mm-price">$11</span></div>
           <div class="mm-desc">Hot sausage, peppers &amp; onions</div>
-          <div class="mm-item"><span class="mm-name">Sausage Italian 8</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Sausage Italian 8 <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Sharp &amp; sharp provolone</div>
         </div></div>
 
-        <!-- 4: Grilled Sammies -->
+        <!-- 2: Grilled Sammies, Buffalos & Wraps -->
         <div class="mm-panel"><div class="mm-panel-body">
+          <div class="mm-sub-head">Grilled Sammies</div>
           <div class="mm-item"><span class="mm-name">Cheese Steak</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">American, mild provolone, Cooper or Real Cheese Whiz</div>
           <div class="mm-item"><span class="mm-name">Cheese Steak Sub</span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Cheese steak sub, LT, fried onions</div>
-          <div class="mm-item"><span class="mm-name">The Jersey Devil</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">The Jersey Devil <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Pork roll, cooper sharp, long hots, fried onions &amp; mayo</div>
-          <div class="mm-item"><span class="mm-name">The Balboa</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">The Balboa <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Steak, whiz, fried onions — A South Philly Favorite!</div>
           <div class="mm-item"><span class="mm-name">The Super Lomo</span><span class="mm-price">$14</span></div>
           <div class="mm-desc">Cheese steak, BLT, fried onion w/ mayo, bacon, lettuce &amp; tomatoes</div>
-          <div class="mm-item"><span class="mm-name">Steak 8</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Steak 8 <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Steak, greens, sharp provolone</div>
           <div class="mm-item"><span class="mm-name">The Volcano</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Steak, whiz, cayenne, fried onions (your choice of hot peppers)</div>
@@ -1733,16 +2097,50 @@
           <div class="mm-desc">Real chicken breast cheese steak. Add LTO $1</div>
           <div class="mm-item"><span class="mm-name">The Pilone</span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Chicken, cheese, bacon, lettuce, tomatoes, fried onions, mayo</div>
-          <div class="mm-item"><span class="mm-name">Grilled Chicken 8</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">Grilled Chicken 8 <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Grilled chicken, greens, sharp provolone (Duck 8)</div>
           <div class="mm-item"><span class="mm-name">The Steak Champ</span><span class="mm-price">$13</span></div>
           <div class="mm-desc">Steak, chicken, bacon, American cheese, Ranch</div>
           <div class="mm-item"><span class="mm-name">The Cuban</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Grilled chicken, ham, swiss cheese, Alberto's salsa, pickles</div>
+          <div class="mm-sub-head">Buffalos</div>
+          <div class="mm-item"><span class="mm-name">The Buffalo Bill</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Chicken steak, buffalo sauce, American cheese &amp; blue cheese</div>
+          <div class="mm-item"><span class="mm-name">The Fleishman</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Crispy chicken, buffalo sauce, American cheese &amp; blue cheese</div>
+          <div class="mm-item"><span class="mm-name">Buffalo Chimichanga</span><span class="mm-price">$14</span></div>
+          <div class="mm-desc">Sweet &amp; spicy chimichanga, deep fried buffalo chicken burrito</div>
+          <div class="mm-item"><span class="mm-name">The Mike Ryan "Chipotle" Chicken</span><span class="mm-price">$13</span></div>
+          <div class="mm-desc">Grilled chicken, cheddar cheese, bacon, chipotle sauce</div>
+          <div class="mm-sub-head">Wraps</div>
+          <div class="mm-item"><span class="mm-name">Chicken Caesar Wrap</span><span class="mm-price">$11</span></div>
+          <div class="mm-desc">Grilled chicken, American cheese, caesar dressing, romaine &amp; parmesan</div>
+          <div class="mm-item"><span class="mm-name">Shrimp Caesar Wrap</span><span class="mm-price">$11</span></div>
+          <div class="mm-desc">Grilled shrimp, romaine, parmesan &amp; caesar</div>
+          <div class="mm-item"><span class="mm-name">Grilled Filet Mignon Caesar Wrap</span><span class="mm-price">$16</span></div>
+          <div class="mm-desc">Grilled filet, parmesan, caesar dressing &amp; romaine</div>
+          <div class="mm-item"><span class="mm-name">Fancy Filet Mignon Wrap</span><span class="mm-price">$16</span></div>
+          <div class="mm-desc">Grilled filet, arugula, horseradish mayo, red onion &amp; feta</div>
+          <div class="mm-item"><span class="mm-name">The Ava Wrap</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Greens, roasted peppers &amp; sharp provolone</div>
+          <div class="mm-item"><span class="mm-name">Greek Chicken Wrap</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Chicken, tomatoes, lettuce, cucumbers, red onions &amp; greek dressing</div>
         </div></div>
 
-        <!-- 5: Big Burgers -->
+        <!-- 3: Burritos & Burgers -->
         <div class="mm-panel"><div class="mm-panel-body">
+          <div class="mm-sub-head">Burritos &amp; Quesadillas</div>
+          <div class="mm-item"><span class="mm-name">Chicken Burrito</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">Steak Burrito</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Beef Burrito</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Shrimp Burrito</span><span class="mm-price">$13</span></div>
+          <div class="mm-item"><span class="mm-name">Sausage Burrito</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Seasoned rice, black beans, cheddar &amp; Alberto's famous salsa</div>
+          <div class="mm-item"><span class="mm-name">Chicken Quesadilla</span><span class="mm-price">$14</span></div>
+          <div class="mm-item"><span class="mm-name">Steak Quesadilla</span><span class="mm-price">$15</span></div>
+          <div class="mm-item"><span class="mm-name">Beef Quesadilla</span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Cheddar, peppers, onions, chipotle sauce, Alberto's salsa &amp; sour cream</div>
+          <div class="mm-sub-head">Big Burgers</div>
           <div class="mm-item"><span class="mm-name">8oz Hand Formed Burger</span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Grilled to your liking — American, Provolone, Whiz, Swiss or Cheddar</div>
           <div class="mm-item"><span class="mm-name">Big John Kelly Cheese Burger</span><span class="mm-price">$12</span></div>
@@ -1754,27 +2152,13 @@
           <div class="mm-desc">Bacon, onion rings, cheddar &amp; BBQ sauce</div>
         </div></div>
 
-        <!-- 6: Burritos & Quesadillas -->
+        <!-- 4: Vegetarian / Seafood -->
         <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">Chicken Burrito</span><span class="mm-price">$12</span></div>
-          <div class="mm-item"><span class="mm-name">Steak Burrito</span><span class="mm-price">$13</span></div>
-          <div class="mm-item"><span class="mm-name">Beef Burrito</span><span class="mm-price">$13</span></div>
-          <div class="mm-item"><span class="mm-name">Shrimp Burrito</span><span class="mm-price">$13</span></div>
-          <div class="mm-item"><span class="mm-name">Sausage Burrito</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Seasoned rice, black beans, cheddar &amp; Alberto's famous salsa</div>
-          <div class="mm-item"><span class="mm-name">Chicken Quesadilla</span><span class="mm-price">$14</span></div>
-          <div class="mm-item"><span class="mm-name">Steak Quesadilla</span><span class="mm-price">$15</span></div>
-          <div class="mm-item"><span class="mm-name">Beef Quesadilla</span><span class="mm-price">$15</span></div>
-          <div class="mm-desc">Cheddar, peppers, onions, chipotle sauce, Alberto's salsa &amp; sour cream</div>
-        </div></div>
-
-        <!-- 7: Vegetarian / Seafood -->
-        <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">Egg Plant 8</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">Egg Plant 8 <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Thin fried eggplant, sharp provo</div>
-          <div class="mm-item"><span class="mm-name">Egg Plant Parm</span><span class="mm-price">$12</span></div>
+          <div class="mm-item"><span class="mm-name">Egg Plant Parm <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$12</span></div>
           <div class="mm-desc">Eggplant, 2 provolone, tomato sauce</div>
-          <div class="mm-item"><span class="mm-name">The John Triff</span><span class="mm-price">$11</span></div>
+          <div class="mm-item"><span class="mm-name">The John Triff <span class="mm-s-roll">seeded roll</span></span><span class="mm-price">$11</span></div>
           <div class="mm-desc">Veggie sub — grilled eggplant, zucchini, mushroom, fried onions, greens, roasted peppers, sharp provo</div>
           <div class="mm-item"><span class="mm-name">Vegan Burrito</span><span class="mm-price">$11</span></div>
           <div class="mm-desc">Seasoned rice &amp; beans, pepper &amp; onion, LT, avocado, Alberto's salsa</div>
@@ -1788,58 +2172,46 @@
           <div class="mm-desc">Crispy shrimp tossed in spicy YUM YUM sauce over sriracha slaw</div>
         </div></div>
 
-        <!-- 8: Buffalos -->
-        <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">The Buffalo Bill</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Chicken steak, buffalo sauce, American cheese &amp; blue cheese</div>
-          <div class="mm-item"><span class="mm-name">The Fleishman</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Crispy chicken, buffalo sauce, American cheese &amp; blue cheese</div>
-          <div class="mm-item"><span class="mm-name">Buffalo Chimichanga</span><span class="mm-price">$14</span></div>
-          <div class="mm-desc">Sweet &amp; spicy chimichanga, deep fried buffalo chicken burrito</div>
-          <div class="mm-item"><span class="mm-name">The Mike Ryan "Chipotle" Chicken</span><span class="mm-price">$13</span></div>
-          <div class="mm-desc">Grilled chicken, cheddar cheese, bacon, chipotle sauce</div>
-        </div></div>
-
-        <!-- 9: Salads -->
+        <!-- 5: Salads -->
         <div class="mm-panel"><div class="mm-panel-body">
           <div class="mm-item"><span class="mm-name">Rosa Salad</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Craisins, candied walnuts, blue cheese, mixed veggies, balsamic · Chx +3 · Shrimp +4 · Salmon +5 · Filet +6</div>
+          <div class="mm-desc">Craisins, candied walnuts, crumbled blue cheese, mixed veggies, balsamic vinaigrette · Chx +3 · Shrimp +4 · Salmon +5 · Filet +6</div>
           <div class="mm-item"><span class="mm-name">Caesar Salad</span><span class="mm-price">$11</span></div>
+          <div class="mm-desc">Mixed veggies, egg, parmesan, Caesar dressing &amp; croutons · Chx +3 · Shrimp +4 · Salmon +5 · Filet +6</div>
           <div class="mm-item"><span class="mm-name">The Crispy Buffalo</span><span class="mm-price">$13</span></div>
-          <div class="mm-desc">Crispy chicken in hot sauce, cheddar, blue cheese dressing</div>
+          <div class="mm-desc">Crispy chicken marinated in hot sauce, cheddar cheese, blue cheese dressing over mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Troy Salad</span><span class="mm-price">$14</span></div>
+          <div class="mm-desc">Fresh chicken salad, bacon, cheddar cheese, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">The Cobb Salad</span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Roasted turkey, cheddar cheese, bacon, avocado, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">The Chef Salad</span><span class="mm-price">$14</span></div>
+          <div class="mm-desc">Roasted turkey, tavern ham, cheddar cheese, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">The Tuna Scoop</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Scoop of tuna salad, cheddar cheese, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Greek Salad</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Feta, Kalamata olives, mixed veggies, egg &amp; Greek vinaigrette · Chx +3 · Shrimp +4 · Salmon +5 · Filet +6</div>
           <div class="mm-item"><span class="mm-name">Grilled Ahi Tuna</span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Grilled ahi tuna over mix greens, parmesan with wasabi vinaigrette</div>
           <div class="mm-item"><span class="mm-name">Grilled Salmon</span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Grilled salmon, mixed veggies, egg &amp; parmesan cheese</div>
           <div class="mm-item"><span class="mm-name">Shrimp Salad</span><span class="mm-price">$13</span></div>
+          <div class="mm-desc">Grilled shrimp, seasoned to perfection, mixed veggies, parmesan &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Surf &amp; Turf Salad</span><span class="mm-price">$19</span></div>
+          <div class="mm-desc">5.5 oz. grilled filet, grilled shrimp, parmesan, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Grilled Tenderloin Salad</span><span class="mm-price">$17</span></div>
+          <div class="mm-desc">5.5 oz. grilled filet, fresh mozzarella, roasted peppers &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Meatball Salad</span><span class="mm-price">$13</span></div>
+          <div class="mm-desc">2 – 2 oz. meatballs, dollop of ricotta, over a garden salad, topped with romano &amp; vinaigrette</div>
           <div class="mm-item"><span class="mm-name">The Wedge Salad</span><span class="mm-price">$12</span></div>
+          <div class="mm-desc">Iceberg lettuce, blue cheese crumbles, bacon, tomato, red onion &amp; egg · Chx +3 · Shrimp +4 · Filet +6</div>
           <div class="mm-item"><span class="mm-name">Antipasto</span><span class="mm-price">$15</span></div>
+          <div class="mm-desc">Pepperoni, salami, sharp provolone, roasted peppers, olives, mixed veggies &amp; egg</div>
           <div class="mm-item"><span class="mm-name">Garden Salad</span><span class="mm-price">$10</span></div>
+          <div class="mm-desc">Mixed veggies, egg &amp; cheese</div>
+          <div class="mm-desc" style="margin-top:0.5rem;font-style:italic;opacity:0.7">Dressings: Homemade Caesar · Balsamic Vinaigrette · Wasabi · Blue Cheese · Ranch · Greek · Creamy Italian · French · Thousand Island · Honey Mustard · Extra $1.50</div>
         </div></div>
 
-        <!-- 10: Wraps -->
-        <div class="mm-panel"><div class="mm-panel-body">
-          <div class="mm-item"><span class="mm-name">Chicken Caesar Wrap</span><span class="mm-price">$11</span></div>
-          <div class="mm-desc">Grilled chicken, American cheese, caesar dressing, romaine &amp; parmesan</div>
-          <div class="mm-item"><span class="mm-name">Shrimp Caesar Wrap</span><span class="mm-price">$11</span></div>
-          <div class="mm-desc">Grilled shrimp, romaine, parmesan &amp; caesar</div>
-          <div class="mm-item"><span class="mm-name">Grilled Filet Mignon Caesar Wrap</span><span class="mm-price">$16</span></div>
-          <div class="mm-desc">Grilled filet, parmesan, caesar dressing &amp; romaine</div>
-          <div class="mm-item"><span class="mm-name">Fancy Filet Mignon Wrap</span><span class="mm-price">$16</span></div>
-          <div class="mm-desc">Grilled filet, arugula, horseradish mayo, red onion &amp; feta</div>
-          <div class="mm-item"><span class="mm-name">The Ava Wrap</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Greens, roasted peppers &amp; sharp provolone</div>
-          <div class="mm-item"><span class="mm-name">Greek Chicken Wrap</span><span class="mm-price">$12</span></div>
-          <div class="mm-desc">Chicken, tomatoes, lettuce, cucumbers, red onions &amp; greek</div>
-        </div></div>
-
-        <!-- 11: Breakfast -->
+        <!-- 7: Breakfast -->
         <div class="mm-panel"><div class="mm-panel-body">
           <div class="mm-item"><span class="mm-name">Pork Roll, Egg &amp; Cheese</span><span class="mm-price">$8 / $11</span></div>
           <div class="mm-item"><span class="mm-name">Bacon, Egg &amp; Cheese</span><span class="mm-price">$8 / $11</span></div>
@@ -1890,15 +2262,48 @@
           </div>
           <div class="mm-cat-block">
             <div class="mm-cat-label">Catering Trays</div>
-            <div class="mm-item"><span class="mm-name">6 Sandwich Tray (6–10 people)</span><span class="mm-price">$93</span></div>
-            <div class="mm-item"><span class="mm-name">8 Sandwich Tray (8–12 people)</span><span class="mm-price">$75</span></div>
+            <div class="mm-item"><span class="mm-name">6 Sandwich Tray (6–10 People) Hot/Cold/Mixed</span><span class="mm-price">$75</span></div>
+            <div class="mm-item"><span class="mm-name">8 Sandwich Tray (8–12 People) Hot/Cold/Mixed</span><span class="mm-price">$93</span></div>
             <div class="mm-item"><span class="mm-name">Jumbo Rosa Salad</span><span class="mm-price">$36</span></div>
+            <div class="mm-desc">Craisins, walnuts, crumbled blue cheese, mixed veggies &amp; homemade balsamic vinaigrette</div>
             <div class="mm-item"><span class="mm-name">Jumbo Caesar Salad</span><span class="mm-price">$32</span></div>
             <div class="mm-item"><span class="mm-name">Jumbo Garden Salad</span><span class="mm-price">$32</span></div>
+            <div class="mm-desc">Prices may vary based on customization</div>
           </div>
-          <div class="mm-cat-block">
-            <div class="mm-cat-label">Specialized Catering</div>
-            <div style="font-style:italic;">for all Events and Occasions — We Can Make Just About Anything!</div>
+          <div class="mm-cat-block" style="text-align:left;">
+            <div class="mm-cat-label" style="text-align:center;">Italian Classics</div>
+            <div class="mm-item"><span class="mm-name">Hot Roast Beef</span><span class="mm-price">$60</span></div>
+            <div class="mm-desc">4 lb Italian style</div>
+            <div class="mm-item"><span class="mm-name">Hot Roast Pork</span><span class="mm-price">$55</span></div>
+            <div class="mm-desc">4 lb Italian style</div>
+            <div class="mm-item"><span class="mm-name">Meatball Special</span><span class="mm-price">$60</span></div>
+            <div class="mm-desc">5 lbs</div>
+            <div class="mm-item"><span class="mm-name">Sausage, Peppers &amp; Onions</span><span class="mm-price">$55</span></div>
+            <div class="mm-desc">Hot or Sweet</div>
+            <div class="mm-item"><span class="mm-name">Meat Lasagna</span><span class="mm-price">$55</span></div>
+            <div class="mm-item"><span class="mm-name">Vegetable Lasagna</span><span class="mm-price">$55</span></div>
+            <div class="mm-item"><span class="mm-name">Lemon Chicken</span><span class="mm-price">$50</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Marbella</span><span class="mm-price">$55</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Cacciatore</span><span class="mm-price">$50</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Marsala</span><span class="mm-price">$50</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Picante</span><span class="mm-price">$50</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Parmesan</span><span class="mm-price">$54</span></div>
+            <div class="mm-item"><span class="mm-name">Eggplant Parmesan</span><span class="mm-price">$54</span></div>
+            <div class="mm-item"><span class="mm-name">Eggplant Rollatini</span><span class="mm-price">$54</span></div>
+            <div class="mm-desc">**Beef, Pork, Meatballs &amp; Sausage come with 2 Doz. Rolls**</div>
+          </div>
+          <div class="mm-cat-block" style="text-align:left;">
+            <div class="mm-cat-label" style="text-align:center;">Pasta</div>
+            <div class="mm-item"><span class="mm-name">Shrimp Scampi</span><span class="mm-price">$49</span></div>
+            <div class="mm-item"><span class="mm-name">Penne &amp; Sausage</span><span class="mm-price">$45</span></div>
+            <div class="mm-item"><span class="mm-name">Chicken Florentine</span><span class="mm-price">$45</span></div>
+            <div class="mm-item"><span class="mm-name">Pasta Florentine</span><span class="mm-price">$39</span></div>
+            <div class="mm-item"><span class="mm-name">Tortellini Carbonara</span><span class="mm-price">$60</span></div>
+            <div class="mm-item"><span class="mm-name">Baked Manicotti</span><span class="mm-price">$39</span></div>
+            <div class="mm-item"><span class="mm-name">Ravioli</span><span class="mm-price">$39</span></div>
+            <div class="mm-item"><span class="mm-name">Baked Ziti</span><span class="mm-price">$35</span></div>
+            <div class="mm-item"><span class="mm-name">Penne Vodka</span><span class="mm-price">$39</span></div>
+            <div class="mm-item"><span class="mm-name">Mac &amp; Cheese</span><span class="mm-price">$40</span></div>
           </div>
         </div></div>
 
@@ -1910,43 +2315,64 @@
   </div>
 </section>
 
+<div class="ital-div div-menu-order" aria-hidden="true"></div>
 <!-- ORDER -->
 <section id="order">
   <div class="container">
     <div class="order-title-row">
-      <p class="section-label">Ready to Eat?</p>
+      <p class="section-label">Hungry? We Got You.</p>
       <h2 class="section-title">Order Your Way</h2>
-      <p style="color:rgba(0,0,0,0.5);margin-top:0.5rem;">Pick up in-store or get it delivered right to your door.</p>
+      <p class="order-motto">Made fresh with love — pick it up warm or we'll bring it to you.</p>
     </div>
 
     <div class="order-grid">
       <!-- Pickup -->
       <a href="tel:6096461763" class="order-card pickup">
-        <div class="order-icon"><i class="ti ti-building-store"></i></div>
-        <div class="order-card-title">Call to Order Pickup</div>
-        <div class="order-card-desc">Call us directly and swing by when it's ready. Fast, fresh, and ready for you.</div>
-        <span class="order-card-action"><i class="ti ti-phone"></i> (609) 646-1763 <i class="ti ti-arrow-right"></i></span>
+        <div class="order-icon"><i class="ti ti-phone-call"></i></div>
+        <div class="order-card-body">
+          <div class="order-card-title">Call Ahead &amp; Pick Up</div>
+          <div class="order-card-desc">Give us a ring and we'll have it hot and ready when you walk in. The family way — fast, fresh, and made for you.</div>
+          <span class="order-card-action"><i class="ti ti-phone"></i> (609) 646-1763</span>
+        </div>
       </a>
 
       <!-- DoorDash -->
-      <a href="https://www.doordash.com/store/rose's-garden-grill-northfield-40076309/106072752/?srsltid=AfmBOoqwnH7PdkTXJQFcOuzERhktsHcb_1UDkTbKB_aGi2wRoesLgNkI" target="_blank" class="order-card doordash">
+      <a href="https://www.doordash.com/store/rose's-garden-grill-northfield-40076309/106072752/?srsltid=AfmBOoqwnH7PdkTXJQFcOuzERhktsHcb_1UDkTbKB_aGi2wRoesLgNkI" target="_blank" rel="noopener" class="order-card doordash">
         <div class="order-icon">
-          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="50" fill="#ff3008"/>
             <path d="M25 38h30a12 12 0 0 1 0 24H25V38z" fill="white"/>
             <circle cx="40" cy="68" r="7" fill="white"/>
             <circle cx="62" cy="68" r="7" fill="white"/>
           </svg>
         </div>
-        <div class="order-card-title">DoorDash</div>
-        <div class="order-card-desc">Order delivery through DoorDash and track your food in real time.</div>
-        <span class="order-card-action">Order on DoorDash <i class="ti ti-arrow-right"></i></span>
+        <div class="order-card-body">
+          <div class="order-card-title">DoorDash Delivery</div>
+          <div class="order-card-desc">Real food, right to your door. We deliver the same love we put into every sandwich — tracked in real time.</div>
+          <span class="order-card-action">Order on DoorDash <i class="ti ti-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Uber Eats -->
+      <a href="https://www.ubereats.com/store/roses-garden-grill/-KzY9nk2V7SDBee4E9-OzA" target="_blank" rel="noopener" class="order-card ubereats">
+        <div class="order-icon">
+          <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="50" fill="#142328"/>
+            <text x="50" y="65" font-size="44" font-family="Arial,sans-serif" font-weight="900" fill="white" text-anchor="middle">U</text>
+          </svg>
+        </div>
+        <div class="order-card-body">
+          <div class="order-card-title">Uber Eats Delivery</div>
+          <div class="order-card-desc">A few taps and Rose's is on its way. Fresh, fast, and full of Trifiletti flavor — straight to your door.</div>
+          <span class="order-card-action">Order on Uber Eats <i class="ti ti-arrow-right"></i></span>
+        </div>
       </a>
 
     </div>
   </div>
 </section>
 
+<div class="ital-div div-order-gallery" aria-hidden="true"></div>
 <!-- GALLERY -->
 <section id="gallery">
   <div class="gallery-header">
@@ -1959,20 +2385,27 @@
   <div class="slideshow-wrap">
     <button class="carousel-arrow carousel-prev" id="carousel-prev" aria-label="Previous"><i class="ti ti-chevron-left"></i></button>
     <button class="carousel-arrow carousel-next" id="carousel-next" aria-label="Next"><i class="ti ti-chevron-right"></i></button>
-    <div class="carousel-track" id="carousel-track">
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5520.png" aria-hidden="true"><img src="IMG_5520.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5522.png" aria-hidden="true"><img src="IMG_5522.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5523.png" aria-hidden="true"><img src="IMG_5523.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5524.png" aria-hidden="true"><img src="IMG_5524.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5525.png" aria-hidden="true"><img src="IMG_5525.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5526.png" aria-hidden="true"><img src="IMG_5526.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5527.png" aria-hidden="true"><img src="IMG_5527.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5528.png" aria-hidden="true"><img src="IMG_5528.png" alt="Rose's Garden Grill"></div>
-      <div class="carousel-item"><img class="ci-blur" src="IMG_5529.png" aria-hidden="true"><img src="IMG_5529.png" alt="Rose's Garden Grill"></div>
-    </div>
+    <div class="carousel-track" id="carousel-track"></div>
   </div>
 
   <div class="slide-dots" id="slide-dots"></div>
+  <button class="gallery-view-all-btn" onclick="openGalleryModal()">View All Photos</button>
+</section>
+
+<div class="ital-div div-gallery-map" aria-hidden="true"></div>
+<!-- MAP -->
+<section class="map-section">
+  <h2>Find Us</h2>
+  <iframe
+    class="map-embed"
+    src="https://maps.google.com/maps?q=Rose%27s+Garden+Grill+Northfield+NJ&output=embed"
+    allowfullscreen
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+  <a class="map-find-us-btn" href="https://maps.google.com/maps?q=Rose%27s+Garden+Grill+Northfield+NJ" target="_blank" rel="noopener">
+    <i class="ti ti-map-pin"></i> Get Directions
+  </a>
 </section>
 
 <!-- FOOTER -->
@@ -1989,6 +2422,7 @@
   </div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;margin-top:1rem;text-align:center;">
     <p style="font-size:0.75rem;opacity:0.4;margin:0;">© 2026 Rose's Garden Grill. All rights reserved.</p>
+    <a href="legal.html" style="font-size:0.75rem;opacity:0.75;color:inherit;text-decoration:underline;">Terms, Disclaimers &amp; Privacy</a>
     <a href="https://shoreworksnj.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;opacity:0.75;color:inherit;text-decoration:none;">Site by <img src="shoreworks-logo.png" alt="Shore Works" style="height:14px;width:auto;display:block;filter:brightness(2.5);"></a>
   </div>
 </footer>
@@ -1999,103 +2433,174 @@
   <img id="lightbox-img" src="" alt="">
 </div>
 
+<!-- GALLERY GRID MODAL -->
+<div class="gallery-modal" id="gallery-modal">
+  <div class="gallery-modal-bar">
+    <h3>All Photos</h3>
+    <button class="gallery-modal-close" onclick="closeGalleryModal()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="gallery-modal-grid" id="gallery-modal-grid"></div>
+</div>
+
+<!-- GALLERY IMAGE VIEWER -->
+<div class="gallery-viewer" id="gallery-viewer" onclick="closeGalleryViewer()">
+  <button class="gallery-viewer-back" onclick="event.stopPropagation();closeGalleryViewer()"><i class="ti ti-arrow-left"></i> Back</button>
+  <button class="gallery-viewer-close" onclick="event.stopPropagation();closeGalleryModal()"><i class="ti ti-x"></i></button>
+  <img id="gallery-viewer-img" src="" alt="Rose's Garden Grill" onclick="event.stopPropagation()">
+</div>
+
 <script>
   history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
 
-  // ── Infinite Carousel ──
-  const track    = document.getElementById('carousel-track');
-  const origItems = Array.from(track.querySelectorAll('.carousel-item'));
-  const N        = origItems.length;
-  const dotsWrap = document.getElementById('slide-dots');
-  let perView    = window.innerWidth <= 600 ? 1 : 3;
-  let slot       = 0;
-  let timer;
+  // ── Infinite Carousel (dynamic image loading) ──
+  const GALLERY_DEFAULTS = [
+    'IMG_5520.png','IMG_5522.png','IMG_5523.png','IMG_5524.png',
+    'IMG_5525.png','IMG_5526.png','IMG_5527.png','IMG_5528.png','IMG_5529.png'
+  ];
 
-  function iw() { return track.parentElement.offsetWidth / perView; }
+  (async () => {
+    // Fetch admin overrides (3s timeout, silently fall back to defaults)
+    let cfg = { gallery: {}, about: {} };
+    try {
+      cfg = await Promise.race([
+        fetch('/api/site-config').then(r => r.json()),
+        new Promise((_, rej) => setTimeout(rej, 3000))
+      ]);
+    } catch {}
 
-  function init() {
-    track.innerHTML = '';
-    origItems.slice(-perView).forEach(el => track.appendChild(el.cloneNode(true)));
-    origItems.forEach(el => track.appendChild(el.cloneNode(true)));
-    origItems.slice(0, perView).forEach(el => track.appendChild(el.cloneNode(true)));
-    slot = perView;
-    track.style.transition = 'none';
-    track.style.transform  = `translateX(${-slot * iw()}px)`;
-    updateDots(0);
-  }
-
-  function updateDots(realIdx) {
-    Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === realIdx));
-  }
-
-  function go(realIdx) {
-    slot = realIdx + perView;
-    track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
-    track.style.transform  = `translateX(${-slot * iw()}px)`;
-    updateDots(realIdx);
-    resetTimer();
-  }
-
-  function advance() {
-    const nextSlot = slot + 1;
-    track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
-    track.style.transform  = `translateX(${-nextSlot * iw()}px)`;
-    slot = nextSlot;
-    const realIdx = slot - perView < N ? slot - perView : 0;
-    updateDots(realIdx);
-    if (slot >= N + perView) {
-      track.addEventListener('transitionend', function onEnd() {
-        track.removeEventListener('transitionend', onEnd);
-        track.style.transition = 'none';
-        slot = perView;
-        track.style.transform  = `translateX(${-slot * iw()}px)`;
-      }, { once: true });
+    // Show closure popup if active
+    const cl = cfg.closure;
+    if (cl?.enabled && cl.start && cl.end) {
+      const today = new Date().toISOString().slice(0, 10);
+      if (today >= cl.start && today <= cl.end) {
+        showClosurePopup(cl);
+      }
     }
-  }
 
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(advance, 3000);
-  }
+    // Update about photos
+    [0, 1].forEach(i => {
+      const url = cfg.about?.[i];
+      if (url) {
+        const el = document.getElementById('about-img-' + i);
+        if (el) el.src = url;
+      }
+    });
 
-  // build dots
-  for (let i = 0; i < N; i++) {
-    const d = document.createElement('button');
-    d.className = 'slide-dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-    d.onclick = () => go(i);
-    dotsWrap.appendChild(d);
-  }
+    // Build gallery HTML (use stored array if present, else defaults)
+    const galleryUrls = (cfg.galleryUrls && cfg.galleryUrls.length) ? cfg.galleryUrls : GALLERY_DEFAULTS.slice();
+    const track = document.getElementById('carousel-track');
+    track.innerHTML = galleryUrls.map(url =>
+      `<div class="carousel-item" style="cursor:pointer" onclick="openGalleryModal()"><img class="ci-blur" src="${url}" aria-hidden="true"><img src="${url}" alt="Rose's Garden Grill"></div>`
+    ).join('');
 
-  init();
-  resetTimer();
+    // Populate grid modal
+    const grid = document.getElementById('gallery-modal-grid');
+    grid.innerHTML = galleryUrls.map(url =>
+      `<div class="gallery-modal-thumb" onclick="openGalleryViewer('${url}')"><img src="${url}" alt="Rose's Garden Grill"></div>`
+    ).join('');
 
-  window.addEventListener('resize', () => {
-    const np = window.innerWidth <= 600 ? 1 : 3;
-    if (np !== perView) { perView = np; init(); resetTimer(); }
+    const origItems = Array.from(track.querySelectorAll('.carousel-item'));
+    const N = origItems.length;
+    const dotsWrap = document.getElementById('slide-dots');
+    let perView = window.innerWidth <= 600 ? 1 : 3;
+    let slot = 0, timer;
+
+    function iw() { return track.parentElement.offsetWidth / perView; }
+
+    function init() {
+      track.innerHTML = '';
+      origItems.slice(-perView).forEach(el => track.appendChild(el.cloneNode(true)));
+      origItems.forEach(el => track.appendChild(el.cloneNode(true)));
+      origItems.slice(0, perView).forEach(el => track.appendChild(el.cloneNode(true)));
+      slot = perView;
+      track.style.transition = 'none';
+      track.style.transform  = `translateX(${-slot * iw()}px)`;
+      updateDots(0);
+    }
+
+    function updateDots(realIdx) {
+      Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === realIdx));
+    }
+
+    function go(realIdx) {
+      slot = realIdx + perView;
+      track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+      track.style.transform  = `translateX(${-slot * iw()}px)`;
+      updateDots(realIdx);
+      resetTimer();
+    }
+
+    function advance() {
+      const nextSlot = slot + 1;
+      track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+      track.style.transform  = `translateX(${-nextSlot * iw()}px)`;
+      slot = nextSlot;
+      const realIdx = slot - perView < N ? slot - perView : 0;
+      updateDots(realIdx);
+      if (slot >= N + perView) {
+        track.addEventListener('transitionend', function onEnd() {
+          track.removeEventListener('transitionend', onEnd);
+          track.style.transition = 'none';
+          slot = perView;
+          track.style.transform  = `translateX(${-slot * iw()}px)`;
+        }, { once: true });
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(advance, 3000);
+    }
+
+    // Build dots
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < N; i++) {
+      const d = document.createElement('button');
+      d.className = 'slide-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      d.onclick = () => go(i);
+      dotsWrap.appendChild(d);
+    }
+
+    init();
+    resetTimer();
+
+    window.addEventListener('resize', () => {
+      const np = window.innerWidth <= 600 ? 1 : 3;
+      if (np !== perView) { perView = np; init(); resetTimer(); }
+    });
+
+    function goBack() {
+      const prevSlot = slot - 1;
+      track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+      track.style.transform  = `translateX(${-prevSlot * iw()}px)`;
+      slot = prevSlot;
+      const realIdx = ((slot - perView) % N + N) % N;
+      updateDots(realIdx);
+      if (slot < perView) {
+        track.addEventListener('transitionend', function onEnd() {
+          track.removeEventListener('transitionend', onEnd);
+          track.style.transition = 'none';
+          slot = N + perView - 1;
+          track.style.transform  = `translateX(${-slot * iw()}px)`;
+        }, { once: true });
+      }
+      resetTimer();
+    }
+    document.getElementById('carousel-prev').addEventListener('click', goBack);
+    document.getElementById('carousel-next').addEventListener('click', () => { advance(); resetTimer(); });
+  })();
+
+  // ── Secret admin tap ──
+  let logoTaps = 0, logoTapTimer;
+  document.getElementById('nav-logo-tap').addEventListener('click', function(e) {
+    e.preventDefault();
+    logoTaps++;
+    clearTimeout(logoTapTimer);
+    if (logoTaps >= 5) { logoTaps = 0; window.location.href = '/admin.html'; return; }
+    logoTapTimer = setTimeout(() => { logoTaps = 0; }, 1500);
   });
-
-  // arrows
-  function goBack() {
-    const prevSlot = slot - 1;
-    track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
-    track.style.transform  = `translateX(${-prevSlot * iw()}px)`;
-    slot = prevSlot;
-    const realIdx = ((slot - perView) % N + N) % N;
-    updateDots(realIdx);
-    if (slot < perView) {
-      track.addEventListener('transitionend', function onEnd() {
-        track.removeEventListener('transitionend', onEnd);
-        track.style.transition = 'none';
-        slot = N + perView - 1;
-        track.style.transform  = `translateX(${-slot * iw()}px)`;
-      }, { once: true });
-    }
-    resetTimer();
-  }
-  document.getElementById('carousel-prev').addEventListener('click', goBack);
-  document.getElementById('carousel-next').addEventListener('click', () => { advance(); resetTimer(); });
 
   // ── Mobile nav ──
   function toggleMobileNav() {
@@ -2110,7 +2615,7 @@
   }
 
   // ── Mobile menu section switcher ──
-  const MM_TITLES = ['The Italians','Cold Sandwiches','Chicken Cutlets','Old Schoolers','Grilled Sammies','Big Burgers','Burritos & Quesadillas','Vegetarian / Seafood','Buffalos','Salads','Wraps','Breakfast','Appetizers','Catering & Hours'];
+  const MM_TITLES = ['Italians & Cold Subs','Cutlets & Old Schoolers','Grilled Sammies, Buffalos & Wraps','Burritos & Burgers','Vegetarian / Seafood','Salads','Breakfast','Appetizers','Catering & Hours'];
   let mmActive = 0;
 
   function showSection(idx) {
@@ -2174,6 +2679,27 @@
 
   // init
   renderGallery();
+
+  // ── Gallery Grid Modal ──
+  function openGalleryModal() {
+    document.getElementById('gallery-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGalleryModal() {
+    document.getElementById('gallery-modal').classList.remove('open');
+    document.getElementById('gallery-viewer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function openGalleryViewer(url) {
+    document.getElementById('gallery-viewer-img').src = url;
+    document.getElementById('gallery-viewer').classList.add('open');
+  }
+  function closeGalleryViewer() {
+    document.getElementById('gallery-viewer').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeGalleryModal();
+  });
 </script>
 
 <!-- Back to top -->
@@ -2219,6 +2745,37 @@
   window.addEventListener('scroll', () => {
     document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
+</script>
+
+<!-- Closure popup -->
+<div id="closure-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;display:none;">
+  <div style="background:#faf8f3;border-radius:18px;max-width:440px;width:100%;padding:2.5rem 2rem;text-align:center;position:relative;box-shadow:0 8px 48px rgba(0,0,0,0.35);">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem;">🌿</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:#8b1a1a;line-height:1.1;margin-bottom:0.5rem;">We're Closed</div>
+    <div style="width:40px;height:3px;background:#8b1a1a;margin:0.6rem auto 1rem;border-radius:2px;opacity:0.4;"></div>
+    <p id="closure-popup-msg" style="font-size:1rem;color:#333;line-height:1.6;margin-bottom:1.5rem;"></p>
+    <button onclick="document.getElementById('closure-overlay').style.display='none'" style="background:#8b1a1a;color:#fff;border:none;padding:0.75rem 2rem;border-radius:30px;font-size:0.95rem;font-weight:700;cursor:pointer;letter-spacing:0.03em;">Got it</button>
+  </div>
+</div>
+
+<style>
+  #closure-overlay { display: none; }
+  #closure-overlay.open { display: flex; }
+</style>
+
+<script>
+  function showClosurePopup(cl) {
+    const fmt = d => {
+      const [y, m, day] = d.split('-');
+      return new Date(y, m - 1, day).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    };
+    const msg = cl.message ||
+      `We appreciate your patience and can't wait to serve you again. See you soon! — The Trifiletti Family`;
+    const dateRange = `Closed ${fmt(cl.start)} – ${fmt(cl.end)}`;
+    const el = document.getElementById('closure-popup-msg');
+    el.innerHTML = `<span style="display:block;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:#8b1a1a;margin-bottom:0.6rem;letter-spacing:0.02em;">${dateRange}</span>${msg}`;
+    document.getElementById('closure-overlay').style.display = 'flex';
+  }
 </script>
 </body>
 </html>
