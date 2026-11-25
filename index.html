@@ -1526,32 +1526,29 @@
       .mobile-menu { display: block; }
 
       .hero-logo { max-width: 150px; margin-bottom: 1rem; }
+      #home { justify-content: flex-end; padding-top: 5rem; padding-bottom: 4.5rem; }
+      .hero > div[style] {
+        background: rgba(0,0,0,0.2) !important;
+        backdrop-filter: blur(2px) !important;
+        -webkit-backdrop-filter: blur(2px) !important;
+      }
 
-      /* Order section — compact cards set in the gold picture frames */
-      .order-title-row { margin-bottom: 1.75rem; }
-      .order-grid { grid-template-columns: 1fr; gap: 1.1rem; max-width: 380px; margin: 0 auto; }
+      /* Order section — compact cards, kept clear of the inset frame lines (inner line sits 26px in) */
+      #order { padding-left: 2.6rem; padding-right: 2.6rem; padding-bottom: 3.75rem; }
+      .order-title-row { margin-bottom: 1.5rem; }
+      .order-grid { grid-template-columns: 1fr; gap: 0.8rem; }
       .order-card {
-        --card: #f8f5ef;
-        position: relative;
         flex-direction: row;
         align-items: center;
-        gap: 0.85rem;
-        padding: calc(0.85rem + 5px) 0.95rem 0.85rem;
-        border: 9px solid transparent;
-        border-radius: 6px;
-        background:
-          linear-gradient(to right, #009246 33.33%, rgba(255,255,255,0.88) 33.33%, rgba(255,255,255,0.88) 66.66%, #ce2b37 66.66%) top / 100% 5px no-repeat padding-box,
-          linear-gradient(var(--card), var(--card)) padding-box,
-          linear-gradient(145deg, #c8a030 0%, #f0d070 20%, #a87820 40%, #f0d070 60%, #c8a030 80%, #f0d070 100%) border-box;
-        box-shadow:
-          0 0 0 1px rgba(0,0,0,0.5),
-          0 8px 26px rgba(0,0,0,0.5),
-          inset 0 2px 6px rgba(0,0,0,0.35),
-          inset 0 0 0 1px rgba(0,0,0,0.25);
+        gap: 0.8rem;
+        padding: calc(0.85rem + 5px) 0.9rem 0.85rem;
+        border-radius: 12px;
+        background-size: 100% 5px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.3);
       }
-      .order-card.pickup { --card: #0d1f10; }
       .order-card:hover { transform: none; }
-      .order-icon { width: 42px; height: 42px; font-size: 1.15rem; margin-bottom: 0; flex-shrink: 0; }
+      .order-icon { width: 38px; height: 38px; font-size: 1.05rem; margin-bottom: 0; flex-shrink: 0; }
+      .order-card-body { min-width: 0; }
       .order-card-title { font-size: 1.08rem; margin-bottom: 0.2rem; }
       .order-card-desc  { font-size: 0.76rem; line-height: 1.45; margin-bottom: 0.55rem; }
       .order-card-action { font-size: 0.66rem; padding: 0.38rem 0.8rem; border-width: 1.5px; }
@@ -2944,6 +2941,26 @@
       <filter id="rl-blur" x="-20%" y="-50%" width="140%" height="200%">
         <feGaussianBlur stdDeviation="7"/>
       </filter>
+      <filter id="rl-grain" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="7" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0 0.02  0 0 0 1.1 -0.45"/>
+      </filter>
+      <clipPath id="rl-clip">
+        <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z"/>
+      </clipPath>
+      <linearGradient id="rl-crumb" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#fbeccb"/>
+        <stop offset="100%" stop-color="#e9c98e"/>
+      </linearGradient>
+      <linearGradient id="rl-gap" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#2a1404"/>
+        <stop offset="100%" stop-color="#5a3010"/>
+      </linearGradient>
+      <linearGradient id="rl-ear" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"   stop-color="#f8dfa6"/>
+        <stop offset="55%"  stop-color="#e6b468"/>
+        <stop offset="100%" stop-color="#c88a3c"/>
+      </linearGradient>
     </defs>
 
     <ellipse class="r-shadow" cx="200" cy="200" rx="150" ry="13" fill="#000" opacity=".7" filter="url(#rl-blur)"/>
@@ -2952,6 +2969,32 @@
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-body)"/>
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-end)"/>
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-shine)"/>
+
+      <g clip-path="url(#rl-clip)">
+        <!-- crust grain -->
+        <rect x="30" y="50" width="340" height="140" filter="url(#rl-grain)" opacity=".55"/>
+
+        <!-- score marks: crust split open on top, pale dough showing -->
+        <g transform="translate(200 92) scale(1.12 1.25) translate(-200 -92)">
+          <path d="M104,108 C116,90 134,79 156,74 C142,84 126,96 112,112 Z" fill="url(#rl-ear)"/>
+          <path d="M112,112 C126,96 142,84 156,74 C140,86 126,100 116,116 Z" fill="#6a360c" opacity=".9" stroke="#5a2c08" stroke-width="1.5"/>
+          <path d="M104,108 C116,90 134,79 156,74" fill="none" stroke="#fff4d6" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round"/>
+
+          <path d="M172,102 C184,84 204,73 226,69 C212,79 194,90 180,106 Z" fill="url(#rl-ear)"/>
+          <path d="M180,106 C194,90 212,79 226,69 C210,81 196,94 184,110 Z" fill="#6a360c" opacity=".9" stroke="#5a2c08" stroke-width="1.5"/>
+          <path d="M172,102 C184,84 204,73 226,69" fill="none" stroke="#fff4d6" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round"/>
+
+          <path d="M240,106 C252,89 271,79 292,76 C278,85 261,95 248,110 Z" fill="url(#rl-ear)"/>
+          <path d="M248,110 C261,95 278,85 292,76 C276,88 263,99 252,114 Z" fill="#6a360c" opacity=".9" stroke="#5a2c08" stroke-width="1.5"/>
+          <path d="M240,106 C252,89 271,79 292,76" fill="none" stroke="#fff4d6" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round"/>
+        </g>
+
+        <!-- lengthwise slit: dark opening with soft crumb on the upper lip -->
+        <path d="M58,146 C120,136 280,136 342,146 C280,160 120,160 58,146 Z" fill="url(#rl-gap)"/>
+        <path d="M58,146 C120,136 280,136 342,146 C280,142 120,142 58,146 Z" fill="url(#rl-crumb)"/>
+        <path d="M70,147 C130,153 270,153 330,147" fill="none" stroke="#e9c98e" stroke-opacity=".35" stroke-width="1.2"/>
+        <path d="M60,148 C120,162 280,162 340,148" fill="none" stroke="#fbe2a8" stroke-opacity=".28" stroke-width="1.5"/>
+      </g>
 
       <!-- seeds sprinkle on -->
       <g fill="url(#rl-seed)">
