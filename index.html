@@ -157,6 +157,12 @@
       transition: opacity .45s ease;
     }
     .hero-panel video.on { opacity: 1; }
+    .hero-panel.big video { object-fit: contain; }
+    .hero-panel.big .bd {
+      position: absolute; inset: -12%;
+      width: 124%; height: 124%;
+      filter: blur(28px) brightness(.5) saturate(1.2);
+    }
 
     /* dark + stripe overlay so text stays readable */
     .hero-vid-overlay {
@@ -202,7 +208,6 @@
       .hero-mosaic { display: none; }
       .hero-vid-overlay { z-index: 1; }
       .hero-mobile-bg { display: block; }
-      .hero-logo { width: 148px; }
       .hero { padding-top: 5rem; padding-bottom: 3.5rem; }
     }
 
@@ -1520,13 +1525,36 @@
       /* show mobile menu */
       .mobile-menu { display: block; }
 
-      /* Order section — stacked, same design as desktop, just smaller */
-      .order-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-      .order-card { padding: calc(1.1rem + 7px) 1.25rem 1.1rem; }
-      .order-icon { width: 48px; height: 48px; font-size: 1.3rem; margin-bottom: 1rem; }
-      .order-card-title { font-size: 1.2rem; margin-bottom: 0.4rem; }
-      .order-card-desc  { font-size: 0.82rem; margin-bottom: 1.1rem; }
-      .order-card-action { font-size: 0.72rem; padding: 0.5rem 1rem; }
+      .hero-logo { max-width: 150px; margin-bottom: 1rem; }
+
+      /* Order section — compact cards set in the gold picture frames */
+      .order-title-row { margin-bottom: 1.75rem; }
+      .order-grid { grid-template-columns: 1fr; gap: 1.1rem; max-width: 380px; margin: 0 auto; }
+      .order-card {
+        --card: #f8f5ef;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.85rem;
+        padding: calc(0.85rem + 5px) 0.95rem 0.85rem;
+        border: 9px solid transparent;
+        border-radius: 6px;
+        background:
+          linear-gradient(to right, #009246 33.33%, rgba(255,255,255,0.88) 33.33%, rgba(255,255,255,0.88) 66.66%, #ce2b37 66.66%) top / 100% 5px no-repeat padding-box,
+          linear-gradient(var(--card), var(--card)) padding-box,
+          linear-gradient(145deg, #c8a030 0%, #f0d070 20%, #a87820 40%, #f0d070 60%, #c8a030 80%, #f0d070 100%) border-box;
+        box-shadow:
+          0 0 0 1px rgba(0,0,0,0.5),
+          0 8px 26px rgba(0,0,0,0.5),
+          inset 0 2px 6px rgba(0,0,0,0.35),
+          inset 0 0 0 1px rgba(0,0,0,0.25);
+      }
+      .order-card.pickup { --card: #0d1f10; }
+      .order-card:hover { transform: none; }
+      .order-icon { width: 42px; height: 42px; font-size: 1.15rem; margin-bottom: 0; flex-shrink: 0; }
+      .order-card-title { font-size: 1.08rem; margin-bottom: 0.2rem; }
+      .order-card-desc  { font-size: 0.76rem; line-height: 1.45; margin-bottom: 0.55rem; }
+      .order-card-action { font-size: 0.66rem; padding: 0.38rem 0.8rem; border-width: 1.5px; }
     }
 
     .mm-card-top {
@@ -2924,17 +2952,6 @@
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-body)"/>
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-end)"/>
       <path d="M38,138 C34,84 108,58 200,58 C292,58 366,84 362,138 C360,172 318,186 200,186 C82,186 40,172 38,138 Z" fill="url(#rl-shine)"/>
-      <path d="M52,150 C80,174 320,174 348,150" fill="none" stroke="#5a2e08" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
-
-      <!-- scoring cuts -->
-      <g stroke-linecap="round" fill="none">
-        <path d="M112,104 C126,86 146,76 166,72" stroke="#8a4c12" stroke-width="7"/>
-        <path d="M112,104 C126,86 146,76 166,72" stroke="#f7d79a" stroke-width="2.5" transform="translate(1,-2.5)"/>
-        <path d="M178,100 C192,82 212,72 232,68" stroke="#8a4c12" stroke-width="7"/>
-        <path d="M178,100 C192,82 212,72 232,68" stroke="#f7d79a" stroke-width="2.5" transform="translate(1,-2.5)"/>
-        <path d="M244,104 C258,86 278,78 296,76" stroke="#8a4c12" stroke-width="7"/>
-        <path d="M244,104 C258,86 278,78 296,76" stroke="#f7d79a" stroke-width="2.5" transform="translate(1,-2.5)"/>
-      </g>
 
       <!-- seeds sprinkle on -->
       <g fill="url(#rl-seed)">
@@ -3017,42 +3034,92 @@
     startVid(mob, clips[cur]);
   } else {
     /* ── Desktop: 5 slots, 8 clips rotate through them, never duplicated on screen ── */
-    var slots = Array.from(document.querySelectorAll('.hero-panel')).map(function (p) {
+    var order = [4, 2, 5, 1, 0, 7, 3, 6]; /* big slot opens on a long clip; small files first elsewhere */
+    var tooShortForBig = [2]; /* clip 03 is ~2s */
+    var slots = Array.from(document.querySelectorAll('.hero-panel')).map(function (p, i) {
       var a = p.querySelector('video');
       var b = a.cloneNode();
       p.appendChild(b);
-      [a, b].forEach(function (v) { v.loop = true; });
-      return { cur: a, spare: b };
+      var big = i === 0;
+      [a, b].forEach(function (v) { v.loop = !big; });
+      return { panel: p, cur: a, spare: b, clip: order[i], big: big, swapping: false };
     });
-    var order = [2, 5, 1, 4, 0, 6, 3, 7]; /* smallest files first */
-    var showing = order.slice(0, slots.length);
     var queue = order.slice(slots.length);
     slots.forEach(function (s, i) {
-      setTimeout(function () { startVid(s.cur, clips[showing[i]]); }, i * 150);
+      setTimeout(function () { startVid(s.cur, clips[s.clip]); }, i * 150);
     });
 
-    /* swap one slot at a time; new clip fades in only once it can play */
-    var next = 1, busy = false;
+    /* next clip is reserved from the queue and buffered in the hidden video, so no clip is ever on screen twice */
+    function prepare(s) {
+      if (s.ready || s.preparing || !queue.length) return;
+      var pick = 0;
+      if (s.big) {
+        while (pick < queue.length && tooShortForBig.indexOf(queue[pick]) !== -1) pick++;
+        if (pick === queue.length) return;
+      }
+      s.preparing = true;
+      s.nextClip = queue.splice(pick, 1)[0];
+      var v = s.spare;
+      v.classList.remove('on');
+      v.src = clips[s.nextClip];
+      v.load();
+      v.addEventListener('canplay', function go() {
+        v.removeEventListener('canplay', go);
+        s.preparing = false; s.ready = true;
+        if (s.pendingShow) show(s);
+      });
+    }
+    function show(s) {
+      s.pendingShow = false; s.ready = false;
+      var incoming = s.spare, outgoing = s.cur;
+      incoming.currentTime = 0;
+      incoming.play().catch(function(){});
+      incoming.classList.add('on');
+      outgoing.classList.remove('on');
+      setTimeout(function () { outgoing.pause(); outgoing.removeAttribute('src'); outgoing.load(); }, 500);
+      s.cur = incoming; s.spare = outgoing;
+      queue.push(s.clip); s.clip = s.nextClip;
+      var cb = s.onShown; s.onShown = null;
+      if (s.big) setTimeout(function () { prepare(s); }, 600);
+      if (cb) cb();
+    }
+    function swap(s, done) {
+      s.onShown = done;
+      if (s.ready) { show(s); return; }
+      s.pendingShow = true;
+      prepare(s);
+      if (!s.preparing && !s.ready) {
+        s.pendingShow = false; s.onShown = null;
+        if (s.big) setTimeout(function () { swap(s, done); }, 1000);
+        else if (done) done();
+      }
+    }
+
+    /* big slot: play each clip all the way through, then cut straight to the pre-buffered next one */
+    var bigSlot = slots[0];
+    bigSlot.cur.addEventListener('playing', function () { prepare(bigSlot); }, { once: true });
+    [bigSlot.cur, bigSlot.spare].forEach(function (v) {
+      v.addEventListener('ended', function () { if (v === bigSlot.cur) swap(bigSlot); });
+    });
+
+    /* blurred fill behind the big slot so the whole portrait frame shows without dead bars */
+    var bd = document.createElement('canvas');
+    bd.width = 24; bd.height = 24; bd.className = 'bd';
+    bigSlot.panel.insertBefore(bd, bigSlot.panel.firstChild);
+    var bctx = bd.getContext('2d');
+    setInterval(function () {
+      var v = bigSlot.cur;
+      if (!document.hidden && v.readyState >= 2) bctx.drawImage(v, 0, 0, 24, 24);
+    }, 120);
+
+    /* small slots: swap one every 3.5s, round-robin */
+    var small = slots.slice(1), next = 0, busy = false;
     setInterval(function () {
       if (busy || document.hidden) return;
-      var i = next, s = slots[i], clip = queue[0];
-      next = (next + 1) % slots.length;
       busy = true;
-      var incoming = s.spare;
-      incoming.classList.remove('on');
-      incoming.src = clips[clip];
-      incoming.load();
-      incoming.addEventListener('canplay', function go() {
-        incoming.removeEventListener('canplay', go);
-        incoming.play().catch(function(){});
-        var outgoing = s.cur;
-        incoming.classList.add('on');
-        outgoing.classList.remove('on');
-        setTimeout(function () { outgoing.pause(); outgoing.removeAttribute('src'); outgoing.load(); }, 500);
-        s.cur = incoming; s.spare = outgoing;
-        queue.shift(); queue.push(showing[i]); showing[i] = clip;
-        busy = false;
-      });
+      var s = small[next];
+      next = (next + 1) % small.length;
+      swap(s, function () { busy = false; });
     }, 3500);
   }
 })();
