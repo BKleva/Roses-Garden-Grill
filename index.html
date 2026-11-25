@@ -2902,16 +2902,15 @@
     85%  { opacity:1; transform:translateX(-10px); }
     100% { opacity:0; transform:translateX(-60px); }
   }
-  .r-cut { stroke-dasharray: 292; stroke-dashoffset: 292; animation: r-cut .5s linear 1.03s forwards; }
+  .r-cut { stroke-dasharray: 272; stroke-dashoffset: 272; animation: r-cut .5s linear 1.03s forwards; }
   @keyframes r-cut { to { stroke-dashoffset: 0; } }
 
-  .r-top {
-    transform-box: view-box; transform-origin: 346px 146px;
-    animation: r-open .55s cubic-bezier(.34,1.55,.64,1) 1.62s both;
+  .r-face { display: none; }
+  .r-slit {
+    transform-box: view-box; transform-origin: 200px 146px;
+    animation: r-slit .45s cubic-bezier(.34,1.6,.64,1) 1.55s both;
   }
-  @keyframes r-open { from { transform:rotate(0deg); } to { transform:rotate(13deg); } }
-  .r-face { opacity: 0; animation: r-face .2s ease 1.64s forwards; }
-  @keyframes r-face { to { opacity: 1; } }
+  @keyframes r-slit { from { transform:scale(.96, 0); } to { transform:scale(1, 1); } }
   @keyframes r-fall {
     0%   { opacity:0; transform:translateY(-150px); }
     20%  { opacity:1; }
@@ -2997,7 +2996,7 @@
       <!-- bottom half -->
       <g clip-path="url(#rl-bot-half)"><use href="#rl-art"/></g>
       <ellipse class="r-face" cx="200" cy="146" rx="155" ry="12" fill="url(#rl-crumb)" stroke="#d9ad66" stroke-width="1.5"/>
-      <path class="r-cut" d="M346,146.5 L54,146.5" fill="none" stroke="#4a2408" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="r-cut" d="M336,146.5 L64,146.5" fill="none" stroke="#4a2408" stroke-width="2.5" stroke-linecap="round"/>
 
       <!-- top half: hinges open after the cut -->
       <g class="r-top">
@@ -3054,6 +3053,13 @@
           <g class="r-seed" style="animation-delay:0.99s"><ellipse cx="286" cy="118" rx="5" ry="2.4" transform="rotate(-35 286 118)"/></g>
           <g class="r-seed" style="animation-delay:1.01s"><ellipse cx="232" cy="110" rx="5" ry="2.4" transform="rotate(-35 232 110)"/></g>
         </g>
+      </g>
+
+      <!-- slit the knife leaves: soft crumb lip over a dark opening, ends stay closed -->
+      <g class="r-slit">
+        <path d="M64,146.5 C130,135 270,135 336,146.5 C270,160 130,160 64,146.5 Z" fill="url(#rl-gap)" stroke="#5a2c08" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M64,146.5 C130,135 270,135 336,146.5 C270,142 130,142 64,146.5 Z" fill="url(#rl-crumb)"/>
+        <path d="M80,149 C140,155 260,155 320,149" fill="none" stroke="#f3d79c" stroke-opacity=".4" stroke-width="1.4" stroke-linecap="round"/>
       </g>
 
       <!-- cartoon knife slides through along the cut -->
